@@ -1,0 +1,200 @@
+﻿<style>
+    #ui-accordion-so-accordion-panel-1 {
+        height: 350px !important;
+    }
+
+    #ui-accordion-so-accordion-panel-2 {
+        height: 350px !important;
+    }
+</style>
+
+<div class="row-layout content">
+
+    <div class="sa-hero upload-banner" style="background-image:url(//cuber.dev/Content/Images/upload-hero1.jpg);top:-20px !important">
+        <ul class="orbit-ul">
+            <li class="orbit-item orbit-item-1">
+                <div class="cover flexcontainer">
+                    <h1 class="sa-hero-title">Share Your Artworks</h1>
+                    <h2 class="sa-hero-subtitle" style="font-size: 1.8rem;">Upload your work and start selling to collectors as well as sharing with our community</h2>
+                    <div class="sa-hero-subtitle-2"></div>
+                    <div id="so-upload-fetching-form" class="upload-fetching-form">
+                        <a href="/@CultureHelper.GetCurrentCulture()/upload/start" class="button fileinput-button">
+                            <span>Upload Now</span>
+                            <input id="fileupload" type="button">
+                        </a>
+                    </div>
+                    <script>
+                        $('.orbit-item').click(function () {
+                            window.location = $(this).find('a').attr('href');
+                            return false;
+                        });
+                    </script>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div id="landing">
+        <div id="so-cols" class="col">
+
+            <div id="so-col-main">
+                <div class="so-col">
+                    <div class="hd">
+
+                    </div>
+                    <div class="bd">
+
+                        <div id="so-upload-description">
+                            <script>
+                                $(function () {
+                                    $("#so-accordion").accordion({
+                                        active: false,
+                                        collapsible: true,
+                                        fillsSpace: true,
+                                        animated: 'easeslide'
+                                    });
+                                });
+                            </script>
+                            <div id="so-quick-guides">
+                                <h2>Upload Standards</h2>
+
+                                <p>General Features:</p>
+                                <ul>
+                                    <li>Your image should be in JPEG format because JPEG is the best digital format for colorful images that could display 16 million colors and keep your colorful data of your work.</li>
+                                    <li>The dimension of your image should be at least 1200X1500 PX and 50MB to be displayed with the highest quality for different monitors.</li>
+
+                                </ul>
+
+                                <div id="so-accordion" class="ui-accordion ui-widget ui-helper-reset" role="tablist">
+                                    <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all" role="tab" id="ui-accordion-so-accordion-header-0" aria-controls="ui-accordion-so-accordion-panel-0" aria-selected="false" tabindex="0">
+                                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+                                        <a href="#">Lighting <i class="fa lighting fa-angle-right"></i></a>
+                                    </h3>
+
+                                    <div class="standards ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" id="ui-accordion-so-accordion-panel-0" aria-labelledby="ui-accordion-so-accordion-header-0" role="tabpanel" aria-expanded="false" aria-hidden="true" style="height: 665px; display: none;">
+                                        <div class="info">
+                                            @* <h4>Color Balance and Exposure</h4>*@
+
+                                            <p>
+                                                Angle of light, has a major impact on form of shadows in your photo which is very important in beauty of your photo and make it lustrous. In other words, good lightening could vitalize your photo.
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all" role="tab" id="ui-accordion-so-accordion-header-1" aria-controls="ui-accordion-so-accordion-panel-1" aria-selected="false" tabindex="0">
+                                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+                                        <a href="#">Quality <i class="fa quality fa-angle-right"></i> </a>
+                                    </h3>
+
+                                    <div class="standards ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" style="overflow: auto; height: 365px !important; display: none;" id="ui-accordion-so-accordion-panel-1" aria-labelledby="ui-accordion-so-accordion-header-0" role="tabpanel" aria-expanded="false" aria-hidden="true">
+                                        <div class="info">
+                                            <p>
+                                                If the light of the environment is not sufficient, you also have to use tripod and sometimes you have to increase ISO (sensitivity of the image). Number 100 is a low sensitivity for ISO, while 6400 is a high sensitivity. If we increase the sensitivity, we can use the higher speed of the shutter and the number diaphragm should decrease, but the images have more noise. Number of ISO between 100-200 in daytime is our suggestion.
+                                                Make sure that you adjust your camera setting with the highest quality to save your file with the highest quality.
+
+                                            </p>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all" role="tab" id="ui-accordion-so-accordion-header-2" aria-controls="ui-accordion-so-accordion-panel-2" aria-selected="false" tabindex="0">
+                                        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+                                        <a href="#">Effects <i class="fa quality fa-angle-right"></i></a>
+                                    </h3>
+
+                                    <div class="standards ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom" id="ui-accordion-so-accordion-panel-2" aria-labelledby="ui-accordion-so-accordion-header-2" role="tabpanel" aria-expanded="false" aria-hidden="true" style="height: 665px; display: none;">
+                                        <div class="info">
+                                            <p>
+                                                We suggest that you do not use more effects for taking photos because it increase the size of your photo. Besides, it reduce the attraction of your work.
+                                                Note: In order to prevent the side effect of shaking your hand, put your camera on tripod, then put the tripod on a flat surface and use self-timer of your camera.
+                                                Note: Since your artwork has signature, you should eliminate any digital signatures or dates from your photo.
+
+                                            </p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="so-share-art">
+
+                                @*<div class="video-container">
+                                        <h1>Photographing Your Artwork</h1>
+                                        <iframe title="Photographing Your Artwork" src="https://www.youtube.com/embed/SrsKycVp-bA?rel=0&amp;enablejsapi=1" frameborder="0" allowfullscreen=""></iframe>
+                                    </div>*@
+                                <div class="small-12 columns multiple-images-container">
+                                    <div class="small-12 medium-12 columns">
+                                        <h1>How to take a good photo of our artwork?</h1>
+
+                                        <p style="text-align:justify !important">
+                                            The image that you upload should represent and display your work well. Wrong photography could even reduce your chance to sell your valuable work. But for taking photo successfully, R24 provide you this guideline.
+                                        </p>
+                                        <br />
+                                        <h1>Composition and Framing:</h1>
+                                        <p style="text-align:justify !important">
+                                            It is better to take a photo of your artwork that fill in the frame and there was no empty space. And it is also better that your artwork will be at the center of the visor camera.
+                                            DSLR cameras can help you to take a phot easier, even if you are not a professional photographer since theses cameras have a bigger sensors in comparison with compact cameras. Bigger sensors usually provide you less noise, high sensitivity and high quality images. Theses sensors give you an image size which is very close and similar to 35mm film photograph of analogue cameras.
+                                        </p>
+                                        <br />
+                                        <h1>Angle of Camera:</h1>
+                                        <p style="text-align:justify !important">Angle and height of camera to the subject, have a great impact on the image you take. It is better that you lens will be parallel to the subject with same height and same angle. For example, if the canvas or frame is tilted, adjust your camera to the same angle as well.</p>
+                                        <br />
+                                        <h1>Background:</h1>
+                                        <p>Your background is better to be flat and clear to make your artwork more attractive. The background of your photo should be as simple as possible to not disturb viewer’s concentration. And we also recommend that crop your photo after photographing and then send it to cuber.dev. And do not leave any empty spaces. Just your artwork should be in your photo.</p>
+                                        <br />
+                                        <h1>Light Condition:</h1>
+                                        <p style="text-align:justify !important">
+                                            Angle of light, has a major impact on form of shadows in your photo which is very important in beauty of your photo and make it lustrous. In other words, good lightening could vitalize your photo.
+                                            We suggest that you use the light of environment instead of using light of the flash camera to take beautiful photos. You can take photos in daytime, open the curtain to use the maximum light of environment and even lighting the environment.
+                                            When the light shines from one side to the subject, create shadows that indicate the depth and dimension of the image more with details.
+                                        </p>
+                                        <br />
+                                        <img style="width:300px;height:180px;display:block;margin:auto;padding-bottom:15px;padding-top:15px" src="~/Content/Images/artwork_lighting_diagram.jpg" />
+                                        <br />
+                                        <p style="text-align:justify !important">If the light of environment is not sufficient, you have to increase the sensitivity of your camera, but we do not recommend this method.</p>
+                                        <br />
+                                        <i>
+                                            “The whole point of taking pictures is so that you don’t have to explain things with words.”
+                                            — Elliott Erwitt
+                                        </i>
+                                        <br />
+                                        <br />
+                                    </div>
+                                    <div class="small-12 medium-5 columns" style="
+                                         height 330px;
+                                         width 300px;
+                                         background-repeat no-repeat;
+                                         background-image url('//d3t95n9c6zzriw.cloudfront.net/upload-homepage/upload-diptych.jpg');">
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            // controls the angle bracket direction for accordion
+                            $(function () {
+                                $('.ui-corner-all').on('click', function () {
+                                    var icon = $(this).find('i');
+
+                                    if (icon.hasClass('fa-angle-down')) {
+                                        $(icon).removeClass('fa-angle-down').addClass('fa-angle-right');
+                                    } else {
+                                        $(icon).removeClass('fa-angle-right').addClass('fa-angle-down');
+                                    }
+                                });
+
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- The global progress bar -->
+<div id="progress" class="progress progress-animated hidden">
+    <div class="progress-bar progress-bar-success"></div>
+</div>
+
+<div class="clearfix"></div>
+</div>

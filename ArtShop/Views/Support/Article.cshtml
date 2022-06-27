@@ -1,0 +1,163 @@
+﻿@using DataLayer.Extentions;
+@model Article
+@{
+    ViewBag.Title = Model.Current().Title + " | R24";
+    Layout = "~/Views/Support/_SupportLayout.cshtml";
+}
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl;text-align:right !important" : "";
+    var rFloatDir = IsRighToLeft ? "float:right" : "";
+    var fFloatDir = IsRighToLeft ? "float:left" : "";
+}
+
+<style>
+    li {
+        list-style-type: unset !important;
+    }
+
+    ul {
+        list-style-type: unset !important;
+    }
+
+    p img {
+        text-align: center !important;
+    }
+</style>
+<style>
+    p, span, li {
+        text-align: justify;
+    }
+
+    img {
+        margin-bottom: 15px;
+        margin-top: 15px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("img").parent().css({ "text-align": "center" });
+    });
+</script>
+<script type="text/javascript">
+
+    /*
+    * Hide Scan button if Page is loaded in Desktop Browser
+    */
+    function hideScanButtonForDesktop() {
+
+        if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))) {
+
+            // Hide scan button for Desktop
+            document.getElementById('article').style.width = "100%";
+            document.getElementById('related').style.marginTop = "14px";
+            @if (!IsRighToLeft) {
+                       <text> document.getElementById('related').style.float = "left";</text>
+            }
+            else
+            {
+       <text> document.getElementById('related').style.float = "right";</text>
+                }
+
+
+        }
+    }
+
+    //toggle scanButton for Desktop on page load
+    window.onload = hideScanButtonForDesktop;
+</script>
+
+<main role="main">
+    <nav class="sub-nav clearfix">
+        <ol style="@rtlstl" class="breadcrumbs">
+
+            <li title="R24">
+
+                <a href="/@CultureHelper.GetCurrentCulture()/support">R24</a>
+
+            </li>
+
+            <li title="@Model.SupportCategory.Current().Name">
+                <a href="@Url.Action("Category", "Support", new { id = @Model.SupportCategory.GenerateSlug() })">@Model.SupportCategory.Current().Name</a>
+            </li>
+
+            @if (Model.SupportSubCategory != null)
+            {
+                <li title="@Model.SupportSubCategory.Current().Name">
+
+                    <a href="@Url.Action("SubCategory", "Support", new { id = @Model.SupportSubCategory.GenerateSlug() })">@Model.SupportSubCategory.Current().Name</a>
+
+                </li>
+            }
+        </ol>
+
+    </nav>
+
+    <div class="clearfix">
+        <article style="@rFloatDir" id="article" name="article" class="main-column">
+            <header class="article-header clearfix">
+                <h1 style="@rtlstl"> @Model.Current().Title</h1>
+            </header>
+
+            <div class="subtle-wrap">
+                <div class="article-body markdown">
+
+                    @Html.Raw(Model.Current().Description)
+
+                </div>
+
+                <div class="article-attachments">
+                    <ul class="attachments"></ul>
+                </div>
+
+                <footer class="article-footer clearfix">
+
+                    @*<div class="article-vote">
+                            <small class="article-vote-count">
+                                <span class="article-vote-label">0 out of 0 found this helpful</span>
+                            </small>
+                        </div>*@
+
+                </footer>
+
+                @*<div class="article-more-questions">
+                        Have more questions? <a href="/hc/en-us/requests/new">Submit a request</a>
+                    </div>*@
+            </div>
+
+            @*<section class="article-comments">
+                    <h2>Comments</h2>
+                    <div class="subtle-wrap">
+
+
+
+                    </div>
+                </section>*@
+
+        </article>
+
+
+        <aside style="@fFloatDir" id="related" class="article-sidebar side-column">
+            <section class="related-articles">
+                <h3 style="@rtlstl">@ShareRes.Related_articles</h3>
+                <ul style="@rtlstl">
+
+                    @foreach (var item in Model.ReletedArticles)
+                    {
+                        <li style="list-style-type:none !important">
+                            <a href="@Url.Action("Article", "Support", new { id = @item.GenerateSlug() })">@item.Current().Title</a>
+                        </li>
+                    }
+
+                </ul>
+            </section>
+
+
+        </aside>
+    </div>
+
+</main>
+
+
+
+

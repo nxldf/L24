@@ -1,0 +1,52 @@
+﻿@model  EditProductMenuViewModel
+
+@helper selected(string current, string selected)
+{
+if (current == selected)
+{
+        @:side-navigation__active
+}
+}
+
+@{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var cstyle = IsRighToLeft ? "margin-right:auto;margin-left:20px" : "";
+}
+
+@if (IsRighToLeft)
+{
+    <style>
+        .side-navigation__top-level {
+            text-align: right;
+        }
+
+        .side-navigation__sub-level {
+            text-align: right;
+        }
+    </style>
+}
+
+<div class="edit-page__nav side-navigation pane pane--inline" style="@cstyle">
+    <div class="side-navigation__hero">
+        <div class="image-upload-dragover">
+            <div class="image-upload-dragover__message"></div>
+        </div>
+
+        <a href="https://cuber.dev/en/products/single/@Model.id"><img class="side-navigation__hero__content" src="@(Model.Photo)"></a> 
+    </div>
+
+    <a class="side-navigation__top-level @selected("Artwork Status",(string)Model.menu)" href="/@CultureHelper.GetCurrentCulture()/Products/Edit/@Model.id">@UploadRes.Artwork_Status</a>
+    @if (Model.Status == ProductStatus.forSale)
+    {
+        <a class="side-navigation__sub-level @selected("Packaging",(string)Model.menu)" href="/@CultureHelper.GetCurrentCulture()/Products/EditPackag/@Model.id">@UploadRes.Packaging</a>
+        <a class="side-navigation__sub-level @selected("Pricing",(string)Model.menu)" href="/@CultureHelper.GetCurrentCulture()/Products/EditPricing/@Model.id">@UploadRes.Pricing</a>
+    }
+    <a class="side-navigation__top-level @selected("Artwork Details",(string)Model.menu)" href="/@CultureHelper.GetCurrentCulture()/Products/Editdetail/@Model.id">@UploadRes.ArtworkDetail</a>
+    <a class="side-navigation__top-level @selected("Description",(string)Model.menu)" href="/@CultureHelper.GetCurrentCulture()/Products/EditDescription/@Model.id">@UploadRes.description</a>
+    @*  <a class="side-navigation__top-level @selected("Prints Status",(string)Model.menu)" href="">Prints Status</a>
+        <a class="side-navigation__top-level @selected("Artwork Image",(string)Model.menu)" href="">Artwork Image</a>*@
+    <div>
+        <button type="submit" class="button button--blue">@UploadRes.SaveChanges</button>
+    </div>
+</div>

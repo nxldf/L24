@@ -1,0 +1,54 @@
+﻿@{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "margin-top:5px" : "";
+    var textAlign = IsRighToLeft ? "text-align:right" : "";
+}
+
+
+<nav class="user-nav" style="width:100% !important">
+    <div class="logo">
+        <a title="R24" href="http://www.cuber.dev">
+            <img style="height: auto; width: 125px; image-rendering: -webkit-optimize-contrast"src="~/Content/Images/logo.png" alt="Logo">
+        </a>
+    </div>
+    <div>
+        <button type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown" style="margin-top:10px;float:right;background:none" aria-haspopup="true" aria-expanded="false">
+            @if (culture == "en-us")
+            {
+                <img style="margin-top:5px;width:20px;float:left;opacity:1" class="pchl desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/united-states.svg">
+                <span class="lnsp" style="padding-left:5px;color:black;font-size:13px">English <i class="fa fa-caret-down"></i></span>
+            }
+            else
+            {
+                <img style="margin-top:5px;width:20px;float:left;opacity:1;" class="pchl desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/iran.svg">
+                <span class="lnsp" style="padding-left:5px;color:black;font-size:13px">فارسی<i class="fa fa-caret-down" style="margin-left:6px"></i></span>
+            }
+        </button>
+
+        <div class="dropdown-menu" style="right:0;left:unset;float:right;margin-top:45px">
+            <a href="/fa/Home/SetCulture?culture=fa&requestUrl=@Request.RawUrl" style="display:block;margin-left:7px">
+                <img style="margin-top:5px;width:20px;float:left;opacity:1;margin-bottom:unset" class="desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/iran.svg">
+                <span style="padding-left:17px;color:black;font-size:13px">فارسی</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="/en-us/Home/SetCulture?culture=en-us&requestUrl=@Request.RawUrl" style="display:block;margin-left:7px;margin-top:6px">
+                <img style="margin-top:5px;width:20px;float:left;opacity:1;margin-bottom:unset" class="desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/united-states.svg">
+                <span style="padding-left:17px;color:black;font-size:13px">English</span>
+            </a>
+        </div>
+    </div>
+    <a class="login" data-auth-action="signin" role="button" href="">Sign in</a>
+
+   @* <a class="my-activities" href="/hc/en-us/requests">My activities</a>*@
+
+</nav>
+<header class="header" id="rotating-images" style="background-image: url(&quot;//p5.zdassets.com/hc/theme_assets/694809/200075888/img-1281-newton-scheufler-hero.jpg&quot;);">
+    <div class="header-inner">
+        <form role="search" class="search" data-search="" action="/@CultureHelper.GetCurrentCulture()/support/search" accept-charset="UTF-8" method="get">
+            <input name="utf8" type="hidden" value="✓"><input type="search" name="keyword" style="@textAlign" id="keyword" placeholder="@ShareRes.Have_Question" aria-label="Search">
+            <input type="submit" name="commit" value="Search">
+        </form>
+    </div>
+
+</header>

@@ -1,0 +1,8 @@
+﻿.btn-googleplus {
+    background-color: rgb(223, 74, 50);
+    color: #fff;
+}
+
+    .btn-googleplus:hover {
+       background-color: #e74c3c;
+    }

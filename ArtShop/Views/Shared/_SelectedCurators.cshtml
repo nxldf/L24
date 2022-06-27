@@ -1,0 +1,76 @@
+﻿@model FirstPageSection
+
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var tar = IsRighToLeft ? "text-align:right" : "";
+}
+
+@using DataLayer.Extentions
+
+<div class="row">
+    <div class="small-12 columns">
+        <h2 style="@tar" class="section-title mt0">@SearchRes.Art_Selected_by_our_Curators</h2>
+        <div style="@tar" class="section-details">@SearchRes.discover_new_original</div>
+    </div>
+</div>
+<div class="row">
+    <ul class="item-list">
+        <li class="list-item feature" style="@tar">
+            <div class="feature-image">
+                <a href="@ViewBag.url1" title="@Model.Current().title">
+                    <img src="@ViewBag.pic1">
+                </a>
+            </div>
+            <div class="row feature-meta" style="height:auto">
+                <h3 class="feature-title ellipsis">
+                    <a href="@ViewBag.url1">
+                        @Model.Current().title
+                    </a>
+                </h3>
+                <span class="feature-subtitle ellipsis">
+                    <a href="@ViewBag.url1">
+                        @Model.Current().desc1
+                    </a>
+                </span>
+            </div>
+        </li>
+        <li class="list-item feature" style="@tar">
+            <div class="feature-image">
+                <a href="@ViewBag.url2" title="@Model.Current().title2">
+                    <img src="@ViewBag.pic2">
+                </a>
+            </div>
+            <div class="row feature-meta" style="height:auto">
+                <h3 class="feature-title ellipsis">
+                    <a href="@ViewBag.url2">
+                        @Model.Current().title2
+                    </a>
+                </h3>
+                <span class="feature-subtitle ellipsis">
+                    <a href="@ViewBag.url2">
+                        @Model.Current().desc2
+                    </a>
+                </span>
+            </div>
+        </li>
+        <li class="list-item feature" style="@tar">
+            <div class="feature-image">
+                <a href="@ViewBag.url3" title="@Model.Current().title3">
+                    <img src="@ViewBag.pic3">
+                </a>
+            </div>
+            <div class="row feature-meta" style="height:auto">
+                <h3 class="feature-title ellipsis">
+                    <a href="@ViewBag.url3">
+                        @Model.Current().title3
+                    </a>
+                </h3>
+                <span class="feature-subtitle ellipsis">
+                    <a href="@ViewBag.url3">
+                        @Model.Current().desc3
+                    </a>
+                </span>
+            </div>
+        </li>
+    </ul>
+</div>

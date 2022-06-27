@@ -1,0 +1,170 @@
+﻿
+
+@{
+    ViewBag.Title = "Upload Avatar | R24";
+}
+
+<style>
+    .fields label {
+        clear: right;
+        float: right;
+        text-align: right;
+    }
+
+    textarea.wide {
+        padding-right: 0.75rem;
+        text-align: right;
+    }
+
+    .page-title {
+        text-align: right;
+    }
+
+    .mb2 {
+        text-align: right;
+    }
+
+    .mb1 {
+        text-align: right;
+    }
+
+    .hd-title {
+        text-align: right;
+    }
+</style>
+
+
+<div class="row-layout content">
+    <div class="row">
+        <div class="small-12 large-4 large-push-8 columns bgtext side-nav-container" style="margin-left:20px;text-align:right">
+
+            <ul class="side-nav">
+                <li class="profile ">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/index">@ProfileRes.Account_info</a>
+                </li>
+                <li class="profile ">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/profileinformation">
+                        @ProfileRes.Profile_information
+                    </a>
+                    <ul class="accordion-list">
+                        <li class="profile active">
+                            <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/uploadavatar">@ProfileRes.Profile_image</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="billing">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/billing">@ProfileRes.Address_Identification</a>
+                </li>
+
+                <li class="sold">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/salesdashboard">@ProfileRes.Sales_Dashboard</a>
+                </li>
+                @*<li>
+                        <a style="padding-left:20px;" href="/accounts/upload-tax-form">
+                            Tax
+                            Form
+                        </a>
+                    </li>*@
+
+                <li class="purchased">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/orders">@ProfileRes.Orders</a>
+                </li>
+
+
+             @*   <li class="account-sign-out"><a href="/sign-out">@ProfileRes.Logout</a></li>*@
+            </ul>
+
+            <div class="clearfix"></div>
+        </div>
+        <div id="so-upload-help" class="small-12 large-8 large-pull-4 columns bgtext content">
+            <h3 class="mb1">@ProfileRes.Upload_photo_header</h3>
+            <p class="mb2">@ProfileRes.Upload_photo_p</p>
+            <link rel="stylesheet" href="~/Content/js/upload/css/jquery.fileupload-ui.css">
+            <link rel="stylesheet" href="~/Content/js/upload/css/jquery.fileupload.css">
+            <script src="/js/upload/js/vendor/jquery.ui.widget.js"></script>
+            <script src="/js/upload/js/jquery.fileupload.js"></script>
+            <form id="so-upload-form" method="post" enctype="multipart/form-data" action="/@CultureHelper.GetCurrentCulture()/accountinfo/uploadavatar">
+                <div class="hidden">
+                    <dt id="so-art-upload-server-label">&nbsp;</dt>
+                    <dd id="so-art-upload-server-element">
+                        <input type="hidden" name="server" value="" id="so-art-upload-server">
+                    </dd>        <dt id="so-art-upload-original-label">&nbsp;</dt>
+                    <dd id="so-art-upload-original-element">
+                        <input type="hidden" name="original" value="" id="so-art-upload-original">
+                    </dd>
+                </div>
+                <span class="btn btn-success fileinput-button" style="float:right">
+                    <span>@ProfileRes.Select_file</span>
+                    <!-- The file input field used as target for the file upload widget -->
+                    <input type="file" id="Image" name="Image" accept="image/*">
+                </span>
+                <a class="btn btn-link" style="color:red;float:right" href="#" onclick="Remove()">@ShareRes.Remove</a>
+                <br><br>
+                <img id="preview" class="hidden" src="" style="float:right;width:100px;height:100px">
+                <!-- The global progress bar -->
+                <div id="progress" class="progress progress-animated hidden">
+                    <div class="progress-bar progress-bar-success"></div>
+                </div>
+                <input type="hidden" name="avatar" value="1">
+                <div class="clear"></div>
+                <a class="btn btn-link" href="#" onclick="history.go(-1)">@ProfileRes.Cancel</a><input type="submit" id="submit" class="button btn-info mt1" value="@ProfileRes.Submit" disabled="" />
+
+            </form>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script>
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#preview').attr('class', '');
+                $('#preview').attr('src', e.target.result);
+                $('#submit').removeAttr('disabled');
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#Image").change(function () {
+        readURL(this);
+    });</script>
+<script>
+
+    function Remove(Cid,Aid) {
+
+        if (confirm("Are you sure you want to remove that image?")) {
+            $.get('/@CultureHelper.GetCurrentCulture()/accountinfo/DeleteAvatar',
+                 function (response) {
+
+                     location.reload();
+                 }
+             );
+        }
+    }
+</script>
+<script>
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#preview').attr('class', '');
+                    $('#preview').attr('src', e.target.result);
+                    $('#submit').removeAttr('disabled');
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#Image").change(function () {
+            readURL(this);
+        });</script>

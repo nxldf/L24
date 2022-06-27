@@ -1,0 +1,230 @@
+﻿@model IList<Product>
+@using DataLayer.Extentions
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl;float:right !important; text-align:right !important" : "";
+    var rtlstlForSize = IsRighToLeft ? "direction:ltr;float:right !important; text-align:right !important; margin-top:7px" : "margin-top:7px";
+    var rtldirection = IsRighToLeft ? "direction:rtl !important;text-align:right !important" : "";
+    var rtldirectionMargin = IsRighToLeft ? "display:-webkit-inline-box;direction:rtl !important" : "";
+    var rtlPosition = IsRighToLeft ? "margin-right:40px !important" : "";
+    var pricertl = IsRighToLeft ? "left:0;right:auto;text-align:left;" : "";
+    
+
+}
+<div role="main" class="row row-layout profile-content">
+
+
+
+    <header class="small-12 columns" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+
+        <a href="/@CultureHelper.GetCurrentCulture()/profile" title="@ViewBag.ProfileFullName's profile" itemprop="url">
+            @if (!String.IsNullOrEmpty(ViewBag.PhotoPath))
+            {
+                if (((string)ViewBag.PhotoPath).Contains("https"))
+                {
+                    <img src="@ViewBag.PhotoPath" alt="avatar" class="avatar" itemprop="image">
+                }
+                else
+                {
+                    <img src="/@ViewBag.PhotoPath" alt="avatar" class="avatar" itemprop="image">
+                }
+            }
+            else
+            {
+                <img src="//d3t95n9c6zzriw.cloudfront.net/common/profile/avatar_tiny_square.jpg" alt="avatar" class="avatar" itemprop="image">
+            }
+
+            <h1 class="profile-subpage-name ellipsis" itemprop="name">@ViewBag.ProfileFullName</h1>
+            <i class="fa fa-caret-left"></i> @ProfileRes.Back_to_profile
+        </a>
+        <a href="/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?archive=true" itemprop="url">
+            <i class="fa fa-archive"></i> @ShareRes.archive
+        </a>
+
+        <div class="Agency-manage-links">
+            @*<a href="/account/manage-art" title="@ProfileRes.Manage_artworks" itemprop="url">@ProfileRes.Manage_artworks</a>
+                <span> | </span>*@
+            @*<a href="/upload/review" class="">@ProfileRes.Upload_art</a>*@
+        </div>
+    </header>
+
+    <div class="profile-nav large-12 columns">
+        <a style="@rtldirection" href="/@CultureHelper.GetCurrentCulture()/profile/artworks" class="active" title="link to artwork">
+            <i class="fa fa-suitcase"></i> @ProfileRes.Artwork <span>(@ViewBag.count)</span>
+        </a>
+        <a style="@rtldirection" href="/@CultureHelper.GetCurrentCulture()/profile/collection" class="" title="link to Collections">
+            <i class="fa fa-th"></i> @ProfileRes.Collections <span>(@ViewBag.collectionCount)</span>
+        </a>
+        <a style="@rtldirection" href="/@CultureHelper.GetCurrentCulture()/profile/favorites" class="" title="link to Favorites">
+            <i class="fa fa-heart"></i> @ProfileRes.Favorites <span>(@ViewBag.favoritesCount)</span>
+        </a>
+    </div>
+    <div class="row sort">
+        <div id="listSort" class="favorites-sort small-12 medium-6 columns">
+        </div>
+        @*<div class="small-12 medium-6 columns view-options mt1">
+                <div>View:</div> <button data-view="fullView" class="view-option btn-round btn-masonry so-quick-tip active" oldtitle="View multiple items"></button>
+                <button data-view="pageWidthView" class="view-option btn-round btn-fullscroll so-quick-tip" oldtitle="View full-width, scrolling"><i class="fa fa-stop"></i></button>
+                <button id="firstStop" data-view="slideshowView" class="view-option btn-round btn-slideshow so-quick-tip" onclick="$('.joyride-tip-guide').fadeOut();" oldtitle="View as slideshow"><i class="fa fa-expand"></i></button>
+            </div>*@
+    </div>
+
+    <div class="row">
+
+        <ul id="infinite" class="item-list masonry" style="position: relative; height: 359.797px;">
+            <li class="art-item upload-art">
+                <a href="/@CultureHelper.GetCurrentCulture()/upload/review" title="Upload Art" class="profile-new-upload-art">
+                    <i class="fa fa-upload icn-bg" style="display:inline-table"></i>
+                    <span style="@rtldirectionMargin">@ProfileRes.Upload_art</span>
+                </a>
+            </li>
+            @foreach (Product item in Model)
+            {
+                <li class="art-item fast-fade ">
+                    <div class="list-art-image" itemscope="" itemtype="http://schema.org/ImageObject">
+                        <div class="list-art-image-wrapper">
+                            <a href="@Url.Action(item.category.Current().Name,"Artwork", new { id=@item.GenerateSlug() })" itemprop="url">
+                                <img src="@item.photo.Path" itemprop="contentURL">
+                            </a>
+                            @if (item.Status == ProductStatus.Sold)
+                            {
+                                <div class="right sold">sold</div>
+                            }
+                        </div>
+                        <div class="item-controls" data-id="3863434" data-Agency="994144" data-art="3672399">
+                            @*<a href="#" data-collection-owner="994144" data-art-id="3672399" class="btn-round btn-add-to-collection hide-for-small-down" rel="nofollow" oldtitle="Add to Collection"><i class="fa fa-plus"></i></a>*@
+                            @*<a href="/upload/edit/art/3672399/Agency/994144" class="btn-round btn-edit" title="Edit" rel="nofollow"><i class="fa fa-pencil"></i></a>*@
+                        </div>
+      
+
+
+                        <div class="list-art-meta" style="height:auto; @rtlstl">
+                            <h4 class="list-art-title left ellipsis" itemprop="name" style="@rtlstl">
+                                <a href="@Url.Action(item.category.Current().Name,"Artwork", new { id=@item.GenerateSlug() })">@item.Title</a>
+                            </h4>
+                            <small style="@rtlstl" class="art-category clear left">@item.category.Current().Name</small>
+                            <small style="@rtlstlForSize" class="art-category clear left"><span>@item.Height  H</span> x <span> @item.Width  W</span> x <span> @item.Depth </span> cm</small>
+
+                            <div class="list-author clear left" style="@rtlstl">
+                                @*<h5 class="Agency-name left ellipsis" itemprop="creator" style="padding-right:0px" itemscope itemtype="http://schema.org/Person">
+                                    <a href="@Url.Action(item.category.Current().Name,"Artwork", new { id=@item.GenerateSlug() })" class="Agency-card" title="Profile page for @item.user.FirstName @item.user.LastName" itemprop="url">@item.user.FirstName  @item.user.LastName</a>
+                                </h5>*@
+                                @if (item.ISOrginalForSale || item.Status == ProductStatus.forSale)
+                                {
+                                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                        <!-- internationalization testing -->
+                                        <div itemprop="price">
+                                            $@item.Price
+                                        </div>
+                                    </div>
+                                }
+                                @*<h5 class="user-location ellipsis clear" itemprop="contentLocation">
+                                    @if (item.user.country != null)
+                                    {
+                                        <span>@item.user.country.Translations.SingleOrDefault(x => x.languageId == System.Globalization.CultureInfo.CurrentCulture.Name.Substring(0, 2)).Name</span>
+                                    }
+                                </h5>*@
+                            </div>
+
+                            <div class="list-art-price" style="@pricertl">
+
+                                <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                    <!-- internationalization testing -->
+                                    <div class="sample-print-price" itemprop="price">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="clearfix"></div>
+        @{
+            int page = ViewBag.page;
+            int count = ViewBag.count;
+            int pageSize = ViewBag.pageSize;
+            bool haveNext = page * pageSize < count;
+            bool havePrev = page != 1;
+            int minpage = 1;
+            int maxpage = (int)Math.Ceiling((float)count / (float)pageSize);
+        }
+
+        <div class="so-pagination">
+            <div class="pagination">
+                <ul class="pull-right">
+                    @if (havePrev)
+                    {
+                        <li><a onclick="document.location.href = '/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@(page-1)'" href="/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@(page-1)"><i class="fa fa-angle-left"></i></a></li>
+                    }
+
+                    @for (int i = Math.Max(1, page - 2); i < page; i++)
+                    {
+                        <li>
+                            <a onclick="document.location.href = '/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@i'" href="/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@i">@i</a>
+                        </li>
+                    }
+
+                    <li class="active">
+                        <a>@page</a>
+                    </li>
+
+                    @for (int i = page + 1; i <= maxpage && Math.Abs(i - page) < 3; i++)
+                    {
+                        <li>
+                            <a onclick="document.location.href = '/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@i'" href="/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@i">@i</a>
+                        </li>
+                    }
+
+
+                    @if (haveNext)
+                    {
+                        <li><a onclick="document.location.href = '/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@(page+1)'" href="/@CultureHelper.GetCurrentCulture()/profile/ArtWorks?page=@(page+1)"><i class="fa fa-angle-right"></i></a></li>
+                    }
+
+                    @*
+                        <li><a href=""><i class="fa fa-angle-double-right"></i></a></li>*@
+                </ul>
+                <div class="so-pagination-count pull-right">
+                    <small>@ShareRes.Showing @((((page - 1) * pageSize) + 1) * (count == 0 ? 0 : 1)) - @(Math.Min(((page - 1) * pageSize) + pageSize, count)) @ShareRes.of @count  </small>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<script src="~/Content/fullview.js"></script>
+
+<script>
+    Saatchi.Loader.load('hslpicker', { js: true });
+    Saatchi.Loader.load('browse', { js: true }, function () {
+        Saatchi.Browse.init();
+    });
+    Saatchi.Loader.load('fullview', { js: true }, function () {
+        Saatchi.Fullview.init();
+        Saatchi.Fullview.SetView.init();
+        Saatchi.Fullview.FullScreen.init();
+    });
+    Saatchi.Loader.load('favorite', { js: true }, function () {
+        Saatchi.Favorite.init();
+    });
+
+    $('.joyride-tip-guide').delay(5000).fadeOut('slow');
+
+    var observer;
+    // stop observing
+    if (observer) {
+        observer.disconnect();
+    }
+
+</script>

@@ -1,0 +1,75 @@
+﻿@using DataLayer.Extentions;
+@model ICollection<Article>
+@{
+    ViewBag.Title = "Search | R24";
+    Layout = "~/Views/Support/_SupportLayout.cshtml";
+}
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl;text-align:right !important" : "";
+    var rtlListType = IsRighToLeft ? "list-style-position:inside !important" : "";
+}
+
+<main role="main">
+    <nav class="sub-nav clearfix">
+        <ol style="@rtlstl" class="breadcrumbs">
+
+            <li title="R24">
+
+                <a href="/@CultureHelper.GetCurrentCulture()/support">R24</a>
+
+            </li>
+
+            <li title="Search results">
+
+                @ShareRes.Search_results
+
+            </li>
+
+        </ol>
+
+    </nav>
+
+    <div class="search-results clearfix">
+        <h1 style="@rtlstl" class="search-results-heading">@Model.Count @ShareRes.Results_for "@ViewBag.keyword"</h1>
+        <section style="@rtlstl" class="search-results-column">
+            @if (!IsRighToLeft)
+            {
+                <h2 style="@rtlstl;@rtlListType" class="search-results-subheading">
+                    Knowledge base
+                </h2>
+            }
+
+            <ul class="search-results-list">
+
+                @foreach (var item in Model)
+                {
+                    <li class="search-result">
+                        <a href="@Url.Action("Article", "Support", new { id = @item.GenerateSlug() })" class="search-result-link">@item.Current().Title</a>
+
+                        @* <span class="search-result-votes">7</span>*@
+                        @if (!IsRighToLeft)
+                        {
+                            <div class="search-result-meta">
+                                by @item.Author <time datetime="@item.PostedOn" title="2015-03-31 23:27" data-datetime="relative">@item.PostedOn</time> in <a href="@Url.Action("Category", "Support", new { id = @item.SupportCategory.GenerateSlug() })">@item.SupportCategory.Current().Name</a>
+                                @if (item.SupportSubCategory != null)
+                                {
+                                    <span>&gt; </span> <a href="@Url.Action("SubCategory", "Support", new { id = @item.SupportSubCategory.GenerateSlug() })">@item.SupportSubCategory.Current().Name</a>
+                                }
+                                
+                            </div>
+
+                        }
+
+                        <div class="search-result-description">@item.Current().ShortDescription </div>
+                    </li>
+                }
+
+            </ul>
+        </section>
+
+
+    </div>
+
+
+</main>

@@ -1,0 +1,79 @@
+﻿@model FirstPageSection
+
+@using DataLayer.Extentions
+
+@{
+    Category p1 = (Category)ViewBag.p1;
+    Category p2 = (Category)ViewBag.p2;
+    Category p3 = (Category)ViewBag.p3;
+    Category p4 = (Category)ViewBag.p4;
+    Category p5 = (Category)ViewBag.p5;
+}
+
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var tar = IsRighToLeft ? "text-align:right" : "";
+}
+
+<div class="row browse-by">
+    <div class="small-12 columns">
+        <h2 style="@tar" class="section-title mb1">@SearchRes.Browse_Art_for_Sale_by_Category</h2>
+    </div>
+</div>
+
+
+<div class="row browse-by">
+    <div class="small-12 medium-4 columns browse-item"
+         style="background-color: #363636;background-size:contain;background-image: url('@ViewBag.pic2')">
+        <a href="@CultureHelper.GetCurrentCulture()/search?category=@p2.Id&style=0&subject=0&medium=0&price=0" class="flexcontainer">
+            <div>
+                <em>@Model.Current().title2</em>
+                @Model.Current().desc2
+            </div>
+            <button>@SearchRes.ViewArtwork</button>
+        </a>
+    </div>
+    <div class="small-12 medium-8 columns browse-item-large"
+         style="background-color: #363636;background-size:cover;background-image: url('@ViewBag.pic1')">
+        <a href="@CultureHelper.GetCurrentCulture()/search?category=@p1.Id&style=0&subject=0&medium=0&price=0" class="flexcontainer">
+            <div>
+                <em>@Model.Current().title</em>
+                @Model.Current().desc1
+            </div>
+            <button>@SearchRes.ViewArtwork</button>
+        </a>
+    </div>
+</div>
+
+<div class="row browse-by">
+    <div class="small-12 medium-4 columns browse-item"
+         style="background-color: #363636;background-size:contain;background-image: url('@ViewBag.pic3')">
+        <a href="@CultureHelper.GetCurrentCulture()/search?category=@p3.Id&style=0&subject=0&medium=0&price=0" class="flexcontainer">
+            <div>
+                <em>@Model.Current().title3</em>
+                @Model.Current().desc3
+            </div>
+            <button>@SearchRes.ViewArtwork</button>
+        </a>
+    </div>
+    <div class="small-12 medium-4 columns browse-item"
+         style="background-color: #363636;background-size:contain;background-image: url('@ViewBag.pic4')">
+        <a href="@CultureHelper.GetCurrentCulture()/search?category=@p4.Id&style=0&subject=0&medium=0&price=0" class="flexcontainer">
+            <div>
+                <em>@Model.Current().title4</em>
+                @Model.Current().desc4
+            </div>
+            <button>@SearchRes.ViewArtwork</button>
+        </a>
+    </div>
+    <div class="small-12 medium-4 columns browse-item"
+         style="background-color: #363636;background-size:contain;background-image: url('@ViewBag.pic5')">
+        <a href="@CultureHelper.GetCurrentCulture()/search?category=@p5.Id&style=0&subject=0&medium=0&price=0" class="flexcontainer">
+            <div>
+                <em>@Model.Current().title5</em>
+                @Model.Current().desc5
+            </div>
+            <button>@SearchRes.ViewArtwork</button>
+        </a>
+    </div>
+</div>

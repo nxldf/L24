@@ -1,0 +1,127 @@
+﻿@using DataLayer.Extentions;
+@model ICollection<Article>
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    ViewBag.Title = "Support | R24";
+}
+<main role="main">
+    <!--MAIN SECTION-->
+    <section class="main-section">
+        <div class="wrapper" style="width:100%">
+            <div class="topic-title-bar">
+                @if (IsRighToLeft)
+                {
+                    <div class="row" style="width:100%">
+                        <div class="medium-6 columns" style="float:right;text-align:right">
+                            <h1>@FooterRes.Agency_Handbook</h1>
+                        </div>
+                        <div class="medium-6 columns" style="float:left;text-align:right;margin-top:7px">
+                            <p>
+                                @ShareRes.Are_You_Buyer
+                                @ShareRes.To_view_Buyer_FAQs
+                                <a target="_blank" href="@Url.Action("Category", "Support", new { id = "12-for-buyers" })">
+                                    @ShareRes.Click_here
+                                </a>
+
+                            </p>
+                        </div>
+
+                    </div>
+
+                }
+                else
+                {
+                    <div class="row" style="width:100%">
+                        <div class="medium-6 columns" style="float:left;text-align:right">
+                            <h1>@FooterRes.Agency_Handbook</h1>
+                        </div>
+                        <div class="medium-6 columns" style="float:right;text-align:right;margin-top:7px">
+                            <p>
+                                @ShareRes.Are_You_Buyer
+                                <a target="_blank" href="@Url.Action("Category", "Support", new { id = "12-for-buyers" })">
+                                    @ShareRes.Click_here
+                                </a>
+                                @ShareRes.To_view_Buyer_FAQs
+                            </p>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="topic-list">
+                @foreach (var item in Model)
+                {
+                    if (IsRighToLeft)
+                    {
+                        <a target="_blank" href="@Url.Action("Article", "Support", new { id = @item.GenerateSlug() })" class="topic-list-item">
+                            <img style="width:15px" src="~/Content/Images/caret-left.svg">
+                            <span class="topic-list-topic" style="text-align:right">
+                                <h3>@item.Current().Title</h3>
+                                <p style="direction:rtl">@item.Current().ShortDescription</p>
+                            </span>
+
+                            <span class="topic-list-icon">
+                                <img src="https://admin.cuber.dev/@item.Thumbnail">
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a target="_blank" href="@Url.Action("Article", "Support", new { id = @item.GenerateSlug() })" class="topic-list-item">
+                            <span class="topic-list-icon">
+                                <img src="https://admin.cuber.dev/@item.Thumbnail">
+                            </span>
+                            <span class="topic-list-topic">
+                                <h3>@item.Current().Title</h3>
+                                <p>@item.Current().ShortDescription</p>
+                            </span>
+                            <img src="~/Content/Images/Support/icon_chevron_right.png">
+                        </a>
+                    }
+                }
+            </div>
+            <!--END TOPIC LIST -->
+            <div class="footer-nav">
+                <a href="@Url.Action("Category", "Support", new { id = "12-for-buyers" })">@FooterRes.Buyer_FAQ</a>
+                <span></span>
+                <a href="https://www.cuber.dev/@CultureHelper.GetCurrentCulture()">@ShareRes.Home</a>
+                <span></span>
+                <a href="https://eyes.cuber.dev/@CultureHelper.GetCurrentCulture()">Eyes Blog</a>
+                <span></span>
+                <a href="https://www.cuber.dev/@CultureHelper.GetCurrentCulture()/pages/whysell">@FooterRes.Why_Sell</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section scripts{
+    
+        <script>
+
+            $(document).ready(function () {
+                @{
+            string val = "";
+            if (Request.Cookies["isShown"] != null) {
+                val = Request.Cookies["isShown"].Value;
+            }
+            if (val == "true")
+            {
+                <text>       $.toast({
+                    heading: '@ShareRes.Success_message',
+                    text: '',
+                    icon: 'success',
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    hideAfter: 7000
+                })</text>
+                        Request.Cookies["isShown"].Value = "false";
+                    }
+        }
+
+            });
+
+
+        </script>
+    
+
+}

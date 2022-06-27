@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Request | R24";
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+}
+@model FAQRequest
+@using reCaptcha
+@helper typeselector(int type)
+{
+if (Model.type == type)
+{ @("selected=\"selected\"")}
+else
+{  @("")}
+}
+
+@if(IsRighToLeft)
+{
+    <style>
+        .mainrt {
+            direction: rtl;
+        }
+        .main-column{
+            float:right;
+        }
+    </style>
+}
+<style>
+    .selectx {
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.13);
+        outline: none;
+        padding: 10px;
+        vertical-align: middle;
+    }
+</style>
+
+<main role="main" class="mainrt">
+    <nav class="sub-nav clearfix">
+        <ol class="breadcrumbs">
+            <li title="Saatchi Art">
+                <a href="/@CultureHelper.GetCurrentCulture()/Support">R24</a>
+            </li>
+            <li title="Submit a request">
+                @ShareRes.FAQ_Title
+            </li>
+        </ol>
+    </nav>
+
+    <div class="clearfix">
+        <section class="main-column">
+            <h1>@ShareRes.FAQ_Title</h1>
+            <div class="form">
+                @using (Html.BeginForm("requests", "Support", FormMethod.Post, new { enctype = "multipart/form-data", @class = "request-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    if (!ViewData.ModelState.IsValid)
+                    {
+                        @Html.ValidationSummary("", new { @class = "text-danger alert alert-danger" })
+                    }
+                    <div class="form-field select optional request_ticket_form_id">
+                        <label for="type">@ShareRes.FAQ_Type</label>
+                        <select class="selectx" name="type" id="type">
+                            <option value="0" @typeselector(0)>@ShareRes.FAQ_Type_0</option>
+                            <option value="1" @typeselector(1)>@ShareRes.FAQ_Type_1</option>
+                            <option value="2" @typeselector(2)>@ShareRes.FAQ_Type_2</option>
+                            <option value="3" @typeselector(3)>@ShareRes.FAQ_Type_3</option>
+                        </select>
+                    </div>
+                    <div class="form-field string required request_anonymous_requester_email">
+                        @Html.LabelFor(x => x.email)
+                        @Html.TextBoxFor(x => x.email)
+                    </div>
+                    <div class="form-field string  required  request_subject">
+                        @Html.LabelFor(x => x.subject)
+                        @Html.TextBoxFor(x => x.subject)
+                    </div>
+                    <div class="form-field text  required  request_description">
+                        @Html.LabelFor(x => x.description)
+                        @Html.TextAreaFor(x => x.description, new { style = "margin-top: 0px; margin-bottom: 0px; height: 98px;" })
+                    </div>
+                    if (Model.type == 1 || Model.type == 0)
+                    {
+                        <div class="form-field string  required  request_custom_fields_25932247">
+                            @Html.LabelFor(x => x.question)
+                            @Html.DropDownList("question", null, htmlAttributes: new { @class = "selectx" })
+                        </div>
+                    }
+                    <div class="form-field string  required  request_custom_fields_25921668">
+                        @Html.LabelFor(x => x.Name)
+                        @Html.TextBoxFor(x => x.Name)
+                    </div>
+                    if (Model.type == 0)
+                    {
+                        <div class="form-field string optional request_custom_fields_31926307">
+                            @Html.LabelFor(x => x.URL)
+                            @Html.TextBoxFor(x => x.URL)
+                        </div>
+                    }
+                    if (Model.type == 0 || Model.type == 1)
+                    {
+                        <div class="form-field string  required  request_custom_fields_25931907">
+                            @Html.LabelFor(x => x.PhoneNumber)
+                            @Html.TextBoxFor(x => x.PhoneNumber)
+                        </div>
+                    }
+
+                    if (Model.type == 2 || Model.type == 3)
+                    {
+                        <div class="form-field string  required  request_custom_fields_25931907">
+                            @Html.LabelFor(x => x.AgencyName)
+                            @Html.TextBoxFor(x => x.AgencyName)
+                        </div>
+                        <div class="form-field string  required  request_custom_fields_25931907">
+                            @Html.LabelFor(x => x.ArtworkTitle)
+                            @Html.TextBoxFor(x => x.ArtworkTitle)
+                        </div>
+                    }
+                    <div class="form-field">
+                        <label>@ShareRes.FAQ_Attachment</label>
+                        <div id="upload-dropzone" class="upload-dropzone" data-hc-focus="false">
+                            <input type="file" name="Attachments">
+                            <span>
+                                <a>Add file</a> or drop files here
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-field required">
+                        <label>@ShareRes.FAQ_Captcha</label>
+                        @ReCaptcha.GetHtml(@ViewBag.publicKey)
+                    </div>
+                    <footer><input type="submit" name="commit" value="@ShareRes.FAQ_Submit"></footer>
+                }
+            </div>
+        </section>
+
+    </div>
+</main>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $("#type").on('change', function () {
+        location.href = '/@CultureHelper.GetCurrentCulture()/support/requests?type=' + this.value;
+    });
+</script>

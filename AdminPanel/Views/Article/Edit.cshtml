@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+@model ArticleViewModel
+
+<link rel="stylesheet" href="~/Content/Admin/styles/fakeFileInputs.css">
+<link rel="stylesheet" href="~/Content/Admin/vendor/select2/dist/css/select2.css">
+
+<div class="page-title">
+    <div class="title"> R24 </div>
+    <ol class="breadcrumb no-bg pl0">
+        <li>
+            <a href="javascript:;">پنل سازمان</a>
+        </li>
+        <li>
+            <a href="javascript:;">مطلب جدید </a>
+        </li>
+    </ol>
+</div>
+
+
+<div class="clearfix"></div>
+
+@if (!string.IsNullOrEmpty(ViewBag.message))
+{
+    <p class="alert alert-success"> @DateTime.Now @ViewBag.message </p>
+}
+<div class="row">
+    <div class="col-lg-12 portlets">
+        @using (Html.BeginForm("edit", "article", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            if (!ViewData.ModelState.IsValid)
+            {
+                @Html.ValidationSummary("", new { @class = "text-danger alert alert-danger" })
+            }
+
+            @Html.HiddenFor(x => x.Id)
+
+            <div class="panel">
+                <div class="card-header">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label style="padding:5px" class="col-sm-2 control-label"> زبان </label>
+                            <div class="col-sm-5">
+                                <select id="lanselect" name="languageId" class="form-control">
+                                    @foreach (var item in ((List<Language>)ViewBag.language))
+                                    {
+                                        if (Model.languageId == item.Code)
+                                        {
+                                            <option selected="selected" value="@item.Code">@item.Code</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Code">@item.Code</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="submit" value="ثبت" class="btn btn-default pull-left" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top:2px">
+                        <div class="col-md-4">
+                            <label style="padding:5px;width:100%" class="col-sm-2 control-label"> دسته بندی * </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="padding:5px;width:100%" class="col-sm-2 control-label"> زیر دسته بندی * </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label style="padding:5px;width:100%" class="col-sm-2 control-label"> Show on Agency Handbook </label>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top:2px">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <select class="form-control" name="Category" id="supportCategory" style="width: 100%;">
+                                    @foreach (var item in ((List<SupportCategory>)ViewBag.categories))
+                                    {
+                                        if (item.Id == Model.Category)
+                                        {
+                                            <option selected value="@item.Id">@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" name="SubCategory" id="supportSubCategory" style="width: 100%;">
+                                    <option value=""> </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" name="isHandbook" id="isHandbook" style="width: 100%;">
+                                    @if (Model.isHandbook)
+                                    {
+                                        <option selected value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected value="false">No</option>
+                                        <option value="true">Yes</option>
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top:10px;margin-bottom:5px">
+                        <div class="form-group">
+                            <label style="padding:5px" class="col-sm-2 control-label">
+                                Related Articles *
+                            </label>
+                            <div class="col-sm-10" id="links">
+                                <select name="ReletedArticles" class="selectx" multiple="multiple" style="width:100%">
+                                    @foreach (var item in (List<Article>)ViewBag.articles)
+                                    {
+                                        if (Model.ReletedArticles.Any(a=>a == item.Id))
+                                        {
+                                            <option selected value="@item.Id">@item.Title</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Title</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label style="padding:5px" class="col-sm-2 control-label"> موضوع * </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="TitleDef" value="@Model.TitleDef" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label style="padding:5px" class="col-sm-2 control-label"> موضوع </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="Title" value="@Model.Title" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label style="padding:5px" class="col-sm-2 control-label"> خلاصه </label>
+                            <div class="col-sm-10">
+                                <input type="text" name="ShortDescription" value="@Model.ShortDescription" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top:10px">
+                        <div class="form-group">
+                            <textarea name="Description" id="Content">@Model.Description</textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="card-header">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label style="padding:5px" class="col-sm-2 control-label">
+                                    تصویر مطلب *
+                                </label>
+                                <div class="col-sm-5">
+                                    <img style="width:150px" src="@Model.ThumbnailPath" />
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="uploader blue">
+                                        <input type="button" name="file" class="button" value="انتخاب.." />
+                                        <input type="text" class="filename" readonly="readonly" />
+                                        <input type="file" id="Image" name="Thumbnail" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/admin/vendor/chosen_v1.4.0/chosen.jquery.min.js"></script>
+    <script src="~/Content/admin/vendor/select2/dist/js/select2.js"></script>
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="~/Content/admin/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/Content/admin/ckeditor/config.js"></script>
+
+    <script type="text/javascript">
+        CKEDITOR.replace('Content', {
+            customConfig: '/config.js',
+            height: 500,
+            filebrowserImageBrowseUrl: '/article/uploadPartial',
+            filebrowserImageUploadUrl: '/article/uploadnow',
+        });
+
+    </script>
+    <script>
+        $('.selectx').select2();
+    </script>
+    <script>
+        $('.chosen').chosen({
+            width: '100%'
+        });
+        $(document).on('change', '#supportCategory', function () {
+            changepro();
+        });
+    </script>
+
+    <script type="text/javascript">
+        function initinputcss() {
+            $(document).ready(function () {
+                $("input[type=file]").change(function () { $(this).parents(".uploader").find(".filename").val($(this).val()); });
+                $("input[type=file]").each(function () {
+                    if ($(this).val() == "") { $(this).parents(".uploader").find(".filename").val("فایلی انتخاب نشده"); }
+                });
+            });
+        }
+        initinputcss();
+    </script>
+
+    <script>
+        $('#lanselect').on('change', function (e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            document.location.href = '/article/edit?id=@Model.Id&language=' + valueSelected;
+        });
+    </script>
+
+    <script>
+        function removephoto(photoid) {
+            var r = confirm("are you sure to remove photo?");
+            if (r == true) {
+                var holder = $('#heare_holder_' + photoid);
+                var removelink = '/article/RemovePhoto?postId=@Model.Id' + '&photoId=' + photoid;
+                $.ajax({
+                    method: "Get",
+                    url: removelink
+                }).done(function (msg) {
+                    if (msg.result == true) {
+                        holder.remove();
+                    }
+                    else
+                        alert(msg.message);
+                });
+            }
+        }
+    </script>
+    <script>
+        function changepro() {
+            $('#supportSubCategory option').remove();
+            $('#supportSubCategory').prop('disabled', true);
+            var iid = $("#supportCategory").val();
+            $.get("/Article/LoadSubCategories?id=" + iid, function (data) {
+                $('#supportSubCategory').prop('disabled', false);
+                $.each(data, function (key, value) {
+                    if (value.Id == '@Model.SubCategory') {
+                        $("#supportSubCategory").append($("<option selected></option>").val(value.Id).html(value.Name));
+                    }
+                    else {
+                        $("#supportSubCategory").append($("<option></option>").val(value.Id).html(value.Name));
+                    }
+
+                });
+            });
+        }
+        changepro();
+    </script>
+}

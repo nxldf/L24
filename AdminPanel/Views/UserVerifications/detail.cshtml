@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "detail";
+}
+
+
+
+@model UserProfile
+
+
+<div class="page-title">
+    <div class="title"> PayoutRequest</div>
+    <ol class="breadcrumb no-bg pl0">
+        <li>
+            <a href="javascript:;">پنل سازمان</a>
+        </li>
+        <li>
+            <a href="/UserVerifications/index"> User Verifications</a>
+        </li>
+        <li>
+            <a href="javascript:;">@Model.ApplicationUserDetail.Email </a>
+        </li>
+    </ol>
+</div>
+
+<div class="clearfix"></div>
+
+
+<div class="row" ng-app="myApp" ng-controller="myCtrl">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="card bg-white m-b">
+            <div class="card-header">
+                <a class="btn btn-sm " href="/UserVerifications/index"><i class="fa fa-arrow-right"></i></a>  @Model.ApplicationUserDetail.Email
+            </div>
+            <div class="card-block">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">FirstName </label>
+                            <input type="text" readonly value="@Model.FirstName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">LastName</label>
+                            <input type="text" readonly value="@Model.LastName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">LastName</label>
+                            <input type="text" readonly value="@Model.LegalName" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Register Date </label>
+                            <input type="text" readonly value="@Model.RegisterDate" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">confirmed by</label>
+                            <input type="text" readonly value="@Model.IdConfirmedBy" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Message</label>
+                            <input type="text" ng-model="myVar" value="" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="form-label">Upload</label>
+                            @if (Model.GovermentIdPath.Contains("https"))
+                            {
+                                <img style="width:100%" src="@Model.GovermentIdPath" />
+                            }
+                            else
+                            {
+                                <img style="width:100%" src="http://cuber.dev/@Model.GovermentIdPath" />
+                            }
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <a href="/UserVerifications/index" class="btn btn-primary">back</a>
+                        <a href="/UserVerifications/SetConfitm?id=@Model.Id&confirm=true&reason=" class="btn btn-success">Qualify</a>
+                        <a href="/UserVerifications/SetConfitm?id=@Model.Id&confirm=false&reason={{myVar}}" class="btn btn-danger">DisQualify</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+{
+
+    @Scripts.Render("~/bundles/angular")
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+            $scope.myVar = "@Model.IdRejectionReason";
+        });
+    </script>
+}

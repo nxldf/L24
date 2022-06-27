@@ -1,0 +1,208 @@
+﻿<div class="sidebar-panel offscreen-left">
+    <div class="brand">
+        <!-- toggle small sidebar menu -->
+        <a href="javascript:;" class="toggle-apps hidden-xs" data-toggle="quick-launch">
+            <i class="icon-grid"></i>
+        </a>
+        <!-- /toggle small sidebar menu -->
+        <!-- toggle offscreen menu -->
+        <div class="toggle-offscreen">
+            <a href="javascript:;" class="visible-xs hamburger-icon" data-toggle="offscreen" data-move="rtl">
+                <span></span>
+                <span></span>
+                <span></span>
+            </a>
+        </div>
+        <!-- /toggle offscreen menu -->
+        <!-- logo -->
+        <a class="brand-logo">
+        </a>
+        <a href="#" class="small-menu-visible brand-logo">R</a>
+        <!-- /logo -->
+    </div>
+    <ul class="quick-launch-apps hide">
+        <li>
+            <a>
+                <span class="app-icon bg-danger text-white">
+                    T
+                </span>
+                <span class="app-title"></span>
+            </a>
+        </li>
+        <li>
+            <a>
+                <span class="app-icon bg-success text-white">
+                    A
+                </span>
+                <span class="app-title"></span>
+            </a>
+        </li>
+        <li>
+            <a>
+                <span class="app-icon bg-primary text-white">
+                    M
+                </span>
+                <span class="app-title"></span>
+            </a>
+        </li>
+        <li>
+            <a>
+                <span class="app-icon bg-info text-white">
+                    A
+                </span>
+                <span class="app-title"></span>
+            </a>
+        </li>
+    </ul>
+    <!-- main navigation -->
+    <nav role="navigation">
+        <ul class="nav">
+
+            <li class="menu-accordion">
+                <a href="/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="menu-accordion">
+                <a href="/FirstPageSettings/header">
+                    <i class="fa fa-desktop"></i>
+                    <span>Main Page </span>
+                </a>
+            </li>
+
+            <li class="menu-accordion">
+                <a href="/Users">
+                    <i class="fa fa-users"></i>
+                    <span> Users</span>
+                </a>
+            </li>
+
+            @if (User.IsInRole("Administrator") || User.IsInRole("Superadmin"))
+            {
+                <li class="menu-accordion">
+                    <a href="/Categories">
+                        <i class="fa fa-paperclip"></i>
+                        <span>Categories</span>
+                    </a>
+                </li>
+                <li class="menu-accordion">
+                    <a href="/ProductTypes/IndexStyles">
+                        <i class="fa fa-tint"></i>
+                        <span>Products </span>
+                    </a>
+                </li>
+            }
+
+            <li class="menu-accordion">
+                <a href="/Products">
+                    <i class="fa fa-plus-circle"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+
+            <li class="menu-accordion">
+                <a href="/languages">
+                    <i class="fa fa-language"></i>
+                    <span> Parameters</span>
+                </a>
+            </li>
+            @if (User.IsInRole("Superadmin"))
+            {
+                <li class="menu-accordion">
+                    <a href="/ImageServers">
+                        <i class="fa fa-server"></i>
+                        <span>Servers</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Superadmin") || User.IsInRole("Administrator"))
+            {
+                <li class="menu-accordion">
+                    <a href="/pages/index">
+                        <i class="fa fa-pencil"></i>
+                        <span> Pages  </span>
+                    </a>
+                </li>
+            }
+            <li class="menu-accordion">
+                <a href="/payouts/index">
+                    <i class="fa fa-list"></i>
+                    <span>  Refunds  </span>
+                </a>
+            </li>
+
+            <li class="menu-accordion">
+                <a href="/visitrequests/index">
+                    <i class="fa fa-eye"></i>
+                    <span> Visit Request  </span>
+                </a>
+            </li>
+
+            <li class="menu-accordion">
+                <a href="/orders/index">
+                    <i class="fa fa-list"></i>
+                    <span> Orders </span>
+                </a>
+            </li>
+            <li class="menu-accordion">
+                <a href="/auction/auctionInfo">
+                    <i class="fa fa-list"></i>
+                    <span> Sales </span>
+                </a>
+            </li>
+            @if (User.IsInRole("Superadmin") || User.IsInRole("Administrator"))
+            {
+                <li class="menu-accordion">
+                    <a href="/MobileHomePage/index">
+                        <i class="fa fa-phone"></i>
+                        <span> Apps </span>
+                    </a>
+                </li>
+            }
+            <li class="menu-accordion">
+                <a href="/UserVerifications/index">
+                    <i class="fa fa-list"></i>
+                    <span> User Verifications  </span>
+                </a>
+            </li>
+            @if (User.IsInRole("Superadmin") || User.IsInRole("Administrator"))
+            {
+                <li class="menu-accordion">
+                    <a href="#">
+                        <i class="fa fa-support"></i>
+                        <span> Supoorts </span>
+                    </a>
+
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="/Article/index">
+                                <span> Papers </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/supportCategories/index">
+                                <span> Categories  </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/supportSubCategories/index">
+                                <span> Sub Categories  </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            }
+            @*<li class="menu-accordion">
+                <a href="#">
+                    <i class="fa fa-line-chart"></i>
+                    <span> گزارشات  *</span>
+                </a>
+            </li>*@
+            
+        </ul>
+    </nav>
+    <!-- /main navigation -->
+</div>

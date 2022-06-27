@@ -1,0 +1,97 @@
+﻿@using Blog.Extentions;
+<!DOCTYPE html>
+<html lang="@CultureHelper.GetCurrentNeutralCulture()">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> @ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="google-site-verification" content="LTJU8q0EBceMg3n-biXSSIG3rKqEaJ1YQatmEplI5f4" />
+    <meta name="description" content="R24 is the best place to buy artwork online. Find the perfect original paintings, fine art photographs and more from the largest selection of original art in the world." />
+    <meta name="keywords" content="affordable art, art dealers, art for sale, art original,art websites, buy art, buy art online, buy original art, buy paintings,buy paintings online, canvas wall art, contemporary abstract art,contemporary art, contemporary arts, contemporary oil paintings, fine art,fine art photography, fine art photography for sale, framed art,home decor wall art, modern art, modern art paintings, office interior design,online art, online art gallery, original art, original art for sale, original painting,collage, drawings, pencil drawings, printmaking for sale, london Agencys, la Agencys, nyc Agencys, australia Agencys, uk Agencys, german Agencys,interior design help, nude photography, nude art, abstract art" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/jquery.toast.min.css" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/global.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/site")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @{var IsRighToLeft = CultureHelper.IsRighToLeft();}
+
+    @if (IsRighToLeft)
+    {
+        <style>
+            @@font-face {
+                font-family: iransans;
+                src: url(/Content/font/IRANSans.ttf);
+            }
+
+            h1 {
+                font-family: 'iransans' !important;
+            }
+
+            h2 {
+                font-family: 'iransans' !important;
+            }
+
+            h3 {
+                font-family: 'iransans' !important;
+            }
+
+            h4 {
+                font-family: 'iransans' !important;
+            }
+
+            span {
+                font-family: 'iransans' !important;
+            }
+
+            p {
+                font-family: 'iransans' !important;
+            }
+
+            a {
+                font-family: 'iransans' !important;
+            }
+
+            body {
+                font-family: 'iransans' !important;
+            }
+        </style>
+    }
+
+</head>
+
+@{
+    var a = ViewContext.Controller.ValueProvider.GetValue("action").RawValue.ToString().ToLower();
+    var c = ViewContext.Controller.ValueProvider.GetValue("controller").RawValue.ToString().ToLower();
+    if (c == "post")
+    {
+        c = "post-template-default single single-post single-format-standard group-blog";
+    }
+    else if (c == "search")
+    {
+
+        c = "page-template page-template-template-search page-template-template-search-php page group-blog";
+    }
+    else
+    {
+        c = "home blog group-blog";
+    }
+}
+<body class="@c" style="padding-top:0px">
+
+    <div class="container">
+
+        @Html.Action("Header", "Home", null)
+        @RenderBody()
+    </div>
+    @Html.Partial("_Footer")
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.toast.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
+</body>
+</html>

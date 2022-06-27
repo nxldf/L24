@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Start | R24";
+}
+
+
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "strat_rtl" : "start_ltr";
+}
+
+
+@Html.Action(rtlstl,"Upload") 
+
+

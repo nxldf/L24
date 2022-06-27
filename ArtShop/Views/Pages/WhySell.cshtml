@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Why Sell | R24";
+}
+<style>
+    li {
+        list-style-type: unset !important;
+        list-style-position:inside !important;
+    }
+
+</style>
+
+@model SitePageTranslation
+@using DataLayer.Extentions
+@{var IsRighToLeft = CultureHelper.IsRighToLeft();}
+
+@if (IsRighToLeft)
+{
+    @Html.Partial("WhySellRTL");
+}
+else
+{
+    <div class="row-layout content">
+        <div class="row">
+            <div class="small-12 large-8 large-push-4 columns bgtext content">
+                <div class="row mb1">
+                    @Html.Raw(Model.Content)
+                </div>
+
+            </div>
+            <div class="small-12 large-4 large-pull-8 columns bgtext side-nav-container">
+                <ul class="side-nav" >
+                    <li><a href="/@CultureHelper.GetCurrentCulture()/pages/WhySell" class="active">@FooterRes.Why_Sell</a></li>
+                </ul>
+            </div>
+
+            <script>if ($(window).width() > 1023) { $('.bgtext.content').imagesLoaded(function () { var sidebarHeight = $('.bgtext.content').height(); $('.side-nav').height(sidebarHeight); }); }</script>
+        </div>        <div class="clearfix"></div>
+    </div>
+}

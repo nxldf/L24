@@ -1,0 +1,334 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Cart | R24";
+}
+
+
+@model ShoppingCartViewModel
+@using DataLayer.Extentions
+
+
+@{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="R24 is the best place to buy artwork online. Find the perfect original paintings, fine art photographs and more from the largest selection of original art in the world." />
+    <meta name="keywords" content="affordable art, art dealers, art for sale, art original,art websites, buy art, buy art online, buy original art, buy paintings,buy paintings online, canvas wall art, contemporary abstract art,contemporary art, contemporary arts, contemporary oil paintings, fine art,fine art photography, fine art photography for sale, framed art,home decor wall art, modern art, modern art paintings, office interior design,online art, online art gallery, original art, original art for sale, original painting,collage, drawings, pencil drawings, printmaking for sale, london Agencys, la Agencys, nyc Agencys, australia Agencys, uk Agencys, german Agencys,interior design help, nude photography, nude art, abstract art" />
+    <link rel="stylesheet" href="~/Content/app-Cart.css" />
+    <script src="~/Scripts/jquery-3.1.1.min.js" type="text/javascript"></script>
+
+    @if (IsRighToLeft)
+    {
+        <style>
+            body {
+                direction: rtl;
+            }
+
+            .checkout__breadcrumb__item:last-child {
+                margin-right: 20px;
+            }
+
+            @@media (min-width: 992px) {
+                .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+                    float: left;
+                }
+            }
+        </style>
+
+        <style>
+            @@media (min-width: 992px) {
+                .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+                    float: right;
+                }
+            }
+        </style>
+
+        <style>
+             @@font-face {
+                font-family: 'YJ';
+                src: url('/Content/font/IRANSans.ttf');
+            }
+
+            html, tr, td, ul, span, h1, h2, h3, em, p, a, body, html, button, b, small, table, header, input, select, option, label, li, ol, div {
+                font-family: yj,"Helvetica",sans-serif  !important;
+            }
+        </style>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            $(".RemoveLink").click(function () {
+                var recordToDelete = $(this).attr("data-id");
+                if (recordToDelete != '') {
+                    $.post("/@CultureHelper.GetCurrentCulture()/Card/RemoveFromCart", { "id": recordToDelete },
+                        function (data) {
+                            if (data.ItemCount == 0) {
+                                $('#row-' + data.DeleteId).fadeOut('slow');
+                            } else {
+                                //$('#item-count-' + data.DeleteId).val(data.ItemCount);
+                            }
+                            $('#carttotalx').html(data.CartTotal);
+                            if (data.CartTotal == 0)
+                            {
+                                $('.step-submission-button').addClass('disabled');
+                                $('.step-submission-button').attr('href', '#');
+                                $('.step-submission-button').css("background-color", "gray");
+
+                            }
+                            //$('#update-message').text(data.Message);
+                            //$('#update-message').show('slow');
+                            //$('#cart-status').text('Cart (' + data.CartCount + ')');
+
+                        });
+                }
+            });
+
+        });
+
+        function changecnt(id) {
+            var val = $('#count-' + id).val();
+            $.post("/@CultureHelper.GetCurrentCulture()/Card/changecnt", { "id": id, "cnt": val },
+                 function (data) {
+                     if (data.ItemCount == 0) {
+                         $('#row-' + data.DeleteId).fadeOut('slow');
+                     } else {
+                         $('#item-count-' + data.DeleteId).val(data.ItemCount);
+                     }
+                     $('#carttotalx').html(data.CartTotal);
+                     $('#update-message').text(data.Message);
+                     $('#update-message').show('slow');
+                     $('#cart-status').text('Cart (' + data.CartCount + ')');
+                 });
+        };
+    </script>
+</head>
+<body>
+
+    <div id="checkout-app-container">
+        <div data-reactroot="">
+            <div class="checkout">
+                <header class="checkout__header">
+                    <div class="container">
+                        <div class="checkout__header__container">
+                            <div class="checkout__header__logo checkout__header__logo--large">
+                                <a href="/@CultureHelper.GetCurrentCulture()/">
+                                    <img alt="R24" style="width:200px;image-rendering:-webkit-optimize-contrast" src="~/Content/Images/logo.png?d=@DateTime.Now.Second">
+                                </a>
+                            </div>
+                            <div class="checkout__header__logo checkout__header__logo--small">
+                                <a href="/@CultureHelper.GetCurrentCulture()/"><img alt="R24" src="~/Content/Images/logo.png?d=@DateTime.Now.Second" style="height:auto;image-rendering:-webkit-optimize-contrast"></a>
+                            </div>
+                            <nav class="checkout__breadcrumb">
+                                <a class="checkout__breadcrumb__item checkout__breadcrumb__item--active" href="/@CultureHelper.GetCurrentCulture()/checkout">
+                                    1. @CardRes.Cart
+                                </a><a class="checkout__breadcrumb__item">
+                                    2. @CardRes.Checkout
+                                </a><a class="checkout__breadcrumb__item">3. @CardRes.Review</a>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+                <section class="checkout__container">
+                    <div class="container">
+                        <nav class="checkout__breadcrumb" style="padding:10px">
+                            <a class="checkout__breadcrumb__item checkout__breadcrumb__item--active" href="/@CultureHelper.GetCurrentCulture()/checkout">
+                                1. @CardRes.Cart
+                            </a>
+                            <a class="checkout__breadcrumb__item">
+                                2. @CardRes.Checkout
+                            </a>
+                            <a class="checkout__breadcrumb__item">
+                                3. @CardRes.pay
+                            </a>
+                        </nav>
+                        <div></div>
+                        <div>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-8">
+                                    <div>
+                                        <div class="cart checkout__content-section">
+                                            <h1>@CardRes.Cart</h1>
+                                            <div class="cart__items">
+                                                @foreach (var item in Model.CartItems)
+                                                {
+                                                <div id="row-@item.Id" class="cart__item cart__item--original">
+                                                    <a rel="noopener noreferrer" target="_blank" href="/@CultureHelper.GetCurrentCulture()/products/single/@item.ProductId" class="cart__item__photo">
+                                                        <img  src="@item.Product.photo.Path">
+                                                    </a>
+                                                    <div class="cart__item__details">
+                                                        <div class="cart__item__details__row">
+                                                            <div class="cart__item__details__left">
+                                                                <div class="cart__item__title">@item.Product.Title</div>
+                                                                <div>@item.Product.user.FirstName @item.Product.user.LastName</div>
+                                                                <div>
+                                                                    @if (item.Product.user.country != null)
+                                                                        {
+                                                                        @item.Product.user.country.Current().Name
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                        <span>Unknown</span>
+                                                                        }
+                                                                </div>
+                                                            </div>
+                                                            <div class="cart__item__details__right"><a data-id="@item.Id" style="cursor:pointer" class="RemoveLink">@CardRes.Remove (@((int)item.Quantity))</a></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="cart__item__pricing">
+                                                        <div>
+                                                            <div>@CardRes.OriginalWork</div>
+                                                            <div>$<span id="cart-total">@item.Product.Price</span></div>
+                                                        </div>
+                                                        @*<div class="cart__item__estimated-delivery-time">
+                                                            <div>
+                                                                This item usually ships within 11 - 14 business days*
+                                                            </div>
+                                                        </div>*@
+                                                    </div>
+                                                </div>
+                                                }
+
+                                                @*<div class="cart__item cart__item--print">
+                                                        <a rel="noopener noreferrer" target="_blank" href="/art/Photography-yin-yang/768405/2361395/view" class="cart__item__photo"><img alt="yin yang" src="//saimg-a.akamaihd.net/saatchi/768405/art/2551400/1621340-6.jpg"></a>
+                                                        <div class="cart__item__details">
+                                                            <div class="cart__item__details__row">
+                                                                <div class="cart__item__details__left">
+                                                                    <div class="cart__item__title">yin yang</div>
+                                                                    <div>Andrey Povarov</div>
+                                                                    <div>Israel</div>
+                                                                </div>
+                                                                <div class="cart__item__details__right">
+                                                                    <div class="cart__item__quantity">
+                                                                        <div>
+                                                                            <span>Qty: </span>
+                                                                            <select></select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <a href="/cart-api/items/remove/P58-U768405-A2361395-F3">Remove</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart__item__pricing">
+                                                            <div>
+                                                                <div>8x10 Photo Paper Print</div>
+                                                                <div>$82.12</div>
+                                                            </div>
+                                                            <div class="cart__item__options">
+                                                                <div>
+                                                                    <!-- react-text: 2198 -->— <!-- /react-text --><!-- react-text: 2199 -->1 ¼" Wide Black Frame (without mat)<!-- /react-text -->
+                                                                </div>
+                                                                <div></div>
+                                                            </div>
+                                                            <div class="cart__item__estimated-delivery-time">
+                                                                <div>
+                                                                    <!-- react-text: 2203 -->This item usually ships within <!-- /react-text --><!-- react-text: 2204 -->5 - 7<!-- /react-text --><!-- react-text: 2205 --> business days*<!-- /react-text -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="cart__total">
+                                                <div class="cart__total__inner">
+                                                    <div class="cart__total__row">
+                                                        <div>@CardRes.Subtotal</div>
+                                                        <div>$ <span id="carttotalx">@Model.CartTotal</span></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            @if (Model.CartTotal != 0)
+                                            {
+                                            <a class="step-submission-button" href="/@CultureHelper.GetCurrentCulture()/Card/getinfo">@CardRes.Next</a>
+                                            }
+                                            else
+                                            {
+                                            <a class="step-submission-button disabled" style="background-color:gray">@CardRes.Next</a>
+                                            }
+
+                                            <div class="loading-block"></div>
+                                        </div>
+                                        <footer class="checkout__footer">
+                                            @*<div>
+                                                <span>
+                                                    © 2017  R24 Online, Inc. Arena Group Commerce. All rights reserved.
+                                                </span>
+                                                <span class="checkout__footer__support">
+                                                    Need&nbsp;help?&nbsp;Contact&nbsp;us&nbsp;at&nbsp; <a href="mailto:support@cuber.dev">support@cuber.dev</a>
+                                                </span>
+                                            </div>*@
+                                            <div>
+                                                <a href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Privacy_policy</a><!-- react-text: 2295 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/copyrightpolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Copyright_policy</a><!-- react-text: 2297 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/terms" target="_blank" rel="noopener noreferrer">@ShareRes.Terms</a>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-4">
+                                    <div class="checkout__sidebar">
+                                        <div class="checkout__sidebar__value-props">
+                                            <div>
+                                                <span class="fa fa-check"></span> @CardRes.r1
+                                            </div>
+                                            <div>
+                                                <span class="fa fa-check"></span> @CardRes.r2
+                                            </div>
+                                            <div>
+                                                <span class="fa fa-lock"></span> @CardRes.r3
+                                            </div>
+                                            <div>
+                                                <span class="fa fa-lock"></span> @CardRes.r4
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="checkout__sidebar__payment-methods">
+                                            <h5>@CardRes.PaymentMethods</h5>
+                                            <div style="justify-content:unset" class="checkout__sidebar__payment-methods__icons">
+                                                <img alt="ZarrinPal" src="~/Content/Images/zarrinpal.png">
+                                                <img style="margin-left:5px;margin-right:5px" alt="paypal" src="~/Content/Images/PayPal.png">
+
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        @*<div class="checkout__sidebar__two-column">
+                                            <div>
+                                                <div class="checkout__sidebar__shipping-providers">
+                                                    <h5>@CardRes.DeliveryPartners</h5>
+                                                    <div class="checkout__sidebar__shipping-providers__icons">
+                                                        <img style="width:80%;height:50%;margin-top:10px" alt="Mahex" src="~/Content/Images/mahex.png">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="checkout__footer checkout__footer--mobile">                            
+                            <div>
+                                <a href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Privacy_policy</a><!-- react-text: 2295 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/copyrightpolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Copyright_policy</a><!-- react-text: 2297 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/terms" target="_blank" rel="noopener noreferrer">@ShareRes.Terms</a>
+                            </div>
+                        </footer>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

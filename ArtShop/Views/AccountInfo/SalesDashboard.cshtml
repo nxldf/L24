@@ -1,0 +1,246 @@
+﻿
+@{
+    ViewBag.Title = "SalesDashboard | R24";
+}
+
+@model List<PayoutRequest>
+
+@using DataLayer.Extentions
+
+@{var IsRighToLeft = CultureHelper.IsRighToLeft();}
+
+@{
+    string side = "pull";
+    string content = "push";
+    string fl = "";
+
+}
+
+@if (IsRighToLeft)
+{
+    side = content; content = "pull";
+    fl = "float:right !important";
+    <style>
+        .fields label {
+            clear: right;
+            float: right;
+            text-align: right;
+        }
+
+        textarea.wide {
+            padding-right: 0.75rem;
+            text-align: right;
+        }
+
+        .page-title {
+            text-align: right;
+        }
+
+        .mb2 {
+            text-align: right;
+        }
+
+        .hd-title {
+            text-align: right;
+        }
+
+        .side-nav-container {
+            text-align: right;
+        }
+
+        table, th, td {
+            text-align: center !important;
+        }
+    </style>
+}
+
+<div class="row-layout content">
+
+    <div class="row">
+        <div class="small-12 large-8 large-@content-4 columns bgtext content" style="@fl">
+            <h3 class="hd-title">@ProfileRes.Sales</h3>
+            <p class="mb2" style="margin-bottom:5px !important;">@(string.Format(ProfileRes.accountValue, "$" + ViewBag.account)) </p>
+
+            <button class="btn btn-info" onclick="$(this).hide(); $('#sales').hide(); $('#payout').show('slow');" style="margin-bottom:5px;"> @ProfileRes.Payouts </button>
+
+            <div id="payout" hidden>
+                @if (Model != null && Model.All(x => x.Seen) && ((int)ViewBag.account) != 0)
+                {
+                    using (Html.BeginForm("SalesDashboard", "accountinfo", FormMethod.Post, new { @class = "", role = "form", id = "payform" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <fieldset class="fields">
+                            <label for="BankName">@ProfileRes.BankName</label>
+                            <input class="wide" name="BankName" id="BankName" />
+
+
+                            <label for="CardNumber">@ProfileRes.CardNumber</label>
+                            <input class="wide" name="CardNumber" id="CardNumber" />
+
+
+                            <label>@ProfileRes.AccountNumber</label>
+                            <div>
+                                <input class="wide" name="AccountNumber" id="AccountNumber" />
+                            </div>
+
+                            <label>@ProfileRes.AccountHolder</label>
+                            <div>
+                                <input class="wide" name="AccountHolder" id="AccountHolder" />
+                            </div>
+
+                            <input type="submit" class="button btn-info mt1" value="@ProfileRes.Requestpayout">
+                        </fieldset>
+                    }
+                }
+
+                <div id="so-shipping-id">
+                    <h3 class="page-title">@ProfileRes.History</h3>
+                    <table class="table table-hover">
+                        <tr>
+                            <td>@UploadRes.Date</td>
+                            <td>@UploadRes.Amount</td>
+                            <td>@UploadRes.Status</td>
+                        </tr>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.date</td>
+                                    <td>@item.Value $</td>
+                                    @if (!item.Seen)
+                                    {
+                                        <td>@ProfileRes.pending</td>
+                                    }
+                                    else if (item.Payed)
+                                    {
+                                        <td>@ProfileRes.Payed</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@ProfileRes.Notpayed</td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+
+            <div id="sales">
+                <h3 class="page-title">@ProfileRes.Sales</h3>
+                <table class="table table-hover">
+                    <tr>
+                        <td>@UploadRes.Date</td>
+                        <td>@ProfileRes.Title</td>
+                        <td>@ProfileRes.Quantity</td>
+                        @*<td>@ProfileRes.Type</td>*@
+                        <td>@ProfileRes.UnitPrice</td>
+                        <td>@ProfileRes.TotalPrice</td>
+                    </tr>
+                    @if (ViewBag.orders != null)
+                    {
+                        foreach (var item in (List<OrderDetail>)ViewBag.orders)
+                        {
+                            <tr>
+                                <td>@item.order.BuyDate</td>
+                                <td><a href="@Url.Action(item.Product.category.Current().Name,"Artwork", new { id=@item.Product.GenerateSlug() })">@item.Product.Title</a></td>
+                                <td>@item.Quantity.ToString("#")</td>
+                        @*<td>@item.type</td>*@
+                        <td>@item.UnitPrice.ToString("#,##") $</td>
+                        <td>@((item.UnitPrice * item.Quantity).ToString("#,##")) $</td>
+                    </tr>
+                        }
+                    }
+                </table>
+            </div>
+
+        </div>
+        <div class="small-12 large-4 large-@side-8 columns bgtext side-nav-container" style="@fl">
+
+            <ul class="side-nav">
+                <li class="profile ">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/index">@ProfileRes.Account_info</a>
+                </li>
+                <li class="profile ">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/profileinformation">
+                        @ProfileRes.Profile_information
+                    </a>
+                </li>
+
+                <li class="billing">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/billing">@ProfileRes.Address_Identification</a>
+                </li>
+
+                <li class="sold active">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/salesdashboard">@ProfileRes.Sales_Dashboard</a>
+                </li>
+
+                <li class="purchased">
+                    <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/orders">@ProfileRes.Orders</a>
+                </li>
+            </ul>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        jQuery.extend(jQuery.validator.messages, {
+            required: "@CardRes.ValidateRequired",
+            number: "@CardRes.ValidateNumber",
+            digits: "@CardRes.ValidateDigits",
+            maxlength: jQuery.validator.format("@CardRes.ValidateMaxlength {0}"),
+            minlength: jQuery.validator.format("@CardRes.ValidateMinlength {0}."),
+            rangelength: jQuery.validator.format("@CardRes.ValidateRangelength {0} - {1}"),
+            range: jQuery.validator.format("@CardRes.ValidateRange {0} - {1}."),
+            max: jQuery.validator.format("@CardRes.ValidateMax {0}."),
+            min: jQuery.validator.format("@CardRes.ValidateMin {0}.")
+        });
+    </script>
+    <script>
+        $("#payform").validate({
+            rules: {
+                BankName: {
+                    required: true,
+                    
+                },
+                CardNumber: {
+                    required: true,
+                    number: true,
+                },
+                AccountNumber: {
+                    required: true,
+                    number: true,
+                },
+                AccountHolder: {
+                    required: true,
+                },
+            },
+            errorPlacement: function (error, element) { }
+        });
+    </script>
+
+    @*@if (!ViewBag.Seen)
+    {
+        <script>
+
+            $.toast({
+                heading: '@ShareRes.Success_message',
+                text: '@ProfileRes.Payout_Error',
+                icon: 'success',
+                showHideTransition: 'slide',
+                position: 'top-right',
+                hideAfter: 7000
+            })
+        </script>
+    }*@
+
+}

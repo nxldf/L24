@@ -1,0 +1,384 @@
+﻿@{
+    ViewBag.Title = "Checkout | R24";
+}
+
+
+
+
+
+@{
+    Layout = null;
+}
+
+@model ShoppingCartViewModel
+@using DataLayer.Extentions
+
+@{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Art Shopping Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="R24 is the best place to buy artwork online. Find the perfect original paintings, fine art photographs and more from the largest selection of original art in the world." />
+    <meta name="keywords" content="affordable art, art dealers, art for sale, art original,art websites, buy art, buy art online, buy original art, buy paintings,buy paintings online, canvas wall art, contemporary abstract art,contemporary art, contemporary arts, contemporary oil paintings, fine art,fine art photography, fine art photography for sale, framed art,home decor wall art, modern art, modern art paintings, office interior design,online art, online art gallery, original art, original art for sale, original painting,collage, drawings, pencil drawings, printmaking for sale, london Agencys, la Agencys, nyc Agencys, australia Agencys, uk Agencys, german Agencys,interior design help, nude photography, nude art, abstract art" />
+
+
+    <link rel="stylesheet" href="~/Content/app-Cart.css" />
+    <script src="~/Scripts/jquery-3.1.1.min.js" type="text/javascript"></script>
+
+    @if (IsRighToLeft)
+    {
+        <style>
+            body {
+                direction: rtl;
+            }
+
+            .input-group > * {
+                flex-grow: 1;
+                margin-left: 15px;
+                width: 50%;
+                margin-right: auto !important;
+            }
+
+            .checkout__breadcrumb__item:last-child {
+                margin-right: 20px;
+            }
+          
+            @@media (min-width: 992px) {
+                .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+                    float: left;
+                }
+            }
+        </style>
+
+        <style>
+            @@media (min-width: 992px) {
+                .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+                    float: right;
+                }
+            }
+        </style>
+
+        <style>
+            @@font-face {
+                font-family: 'YJ';
+                src: url('/Content/font/IRANSans.ttf');
+            }
+
+            html, tr, td, ul, span, h1, h2, h3, em, p, a, body, html, button, b, small, table, header, input, select, option, label, li, ol, div {
+                font-family: yj,"Helvetica",sans-serif !important;
+            }
+        </style>
+    }
+
+    <style>
+          .error {
+                color: #f05028 !important;
+            }
+    </style>
+
+</head>
+<body>
+
+    <div id="checkout-app-container">
+        <div data-reactroot="">
+            <div class="checkout">
+                <header class="checkout__header">
+                    <div class="container">
+                        <div class="checkout__header__container">
+                            <div class="checkout__header__logo checkout__header__logo--large">
+                                <a href="/@CultureHelper.GetCurrentCulture()/">
+                                    <img alt="R24" style="width:200px;image-rendering:-webkit-optimize-contrast" src="~/Content/Images/logo.png?d=@DateTime.Now.Second">
+                                </a>
+                            </div><div class="checkout__header__logo checkout__header__logo--small">
+                                <a href="/">
+                                    <a href="/"><img alt="R24" src="~/Content/Images/logo.png?d=@DateTime.Now.Second" style="height:auto;image-rendering:-webkit-optimize-contrast"></a>
+                                </a>
+                            </div>
+                            <nav class="checkout__breadcrumb">
+                                <a class="checkout__breadcrumb__item" href="/@CultureHelper.GetCurrentCulture()/checkout"><!-- react-text: 15 -->1<!-- react-text: 16 -->. <!-- /react-text -->@CardRes.Cart<!-- /react-text --></a>
+                                <a class="checkout__breadcrumb__item  checkout__breadcrumb__item--active"><!-- react-text: 19 -->2<!-- /react-text -->. <!-- /react-text --><!-- react-text: 21 -->@CardRes.Checkout<!-- /react-text --></a>
+                                <a class="checkout__breadcrumb__item"><!-- react-text: 23 -->3<!-- /react-text -->. <!-- /react-text --><!-- react-text: 25 -->@CardRes.Review<!-- /react-text --></a>
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+                <section class="checkout__container">
+                    <div class="container">
+                        <nav class="checkout__breadcrumb" style="padding:10px">
+                            <a class="checkout__breadcrumb__item" href="/@CultureHelper.GetCurrentCulture()/checkout">
+                                <!-- react-text: 30 -->1<!-- /react-text --><!-- react-text: 31 -->. <!-- /react-text --><!-- react-text: 32 -->@CardRes.Cart<!-- /react-text -->
+                            </a>
+                            <a class="checkout__breadcrumb__item checkout__breadcrumb__item--active">
+                                <!-- react-text: 34 -->2<!-- /react-text --><!-- react-text: 35 -->. <!-- /react-text --><!-- react-text: 36 -->@CardRes.Checkout<!-- /react-text -->
+                            </a>
+                            <a class="checkout__breadcrumb__item">
+                                <!-- react-text: 38 -->3<!-- /react-text --><!-- react-text: 39 -->. <!-- /react-text --><!-- react-text: 40 -->@CardRes.pay<!-- /react-text -->
+                            </a>
+                        </nav>
+                        <div></div>
+                        <div>
+                            <!-- react-empty: 43 -->
+                            <div class="row">
+                                <div class="col-xs-12 col-md-8">
+                                    <div>
+                                        @using (Html.BeginForm("getinfo", "Card", FormMethod.Post, new { id = "mform" }))
+                                        {
+                                            <div class="cart checkout__content-section">
+                                                <h1>@CardRes.CheckInfo</h1>
+                                                @Html.ValidationSummary()
+                                                <div class="cart__items">
+
+                                                    <div class="form">
+                                                        <div class="input-group">
+                                                            <div class="input-with-placeholder">
+                                                                <input type="text" placeholder="@CardRes.firstname *" name="firstname" value="@ViewBag.name" class="input-with-placeholder__input " id="firstname">
+                                                            </div>
+                                                            <div class="input-with-placeholder">
+                                                                <input type="text" placeholder="@CardRes.lastname *" name="lastname" value="@ViewBag.lastname" class="input-with-placeholder__input " id="lastname">
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <span class="fa fa-map-marker input-group__icon input-group__icon--right" aria-hidden="true"></span>
+                                                            <div class="input-with-placeholder">
+                                                                <input type="text" placeholder="@CardRes.Address *" value="@ViewBag.Street" name="address" class="input-with-placeholder__input " id="address" autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-group-container" style="display: block;">
+                                                            <div class="input-group">
+                                                                <select name="country" @*onchange="location.href = '/@CultureHelper.GetCurrentCulture()/card/getinfo?c=' + this.value"*@ placeholder="@CardRes.Country" id="country">
+
+                                                                    @foreach (var item in ArtShop.Util.CashManager.Instance.Countries)
+                                                                    {
+                                                                        if (ViewBag.Country != null && (int)ViewBag.Country == item.Key)
+                                                                        {
+                                                                            <option selected value="@item.Key">@item.Value</option>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value="@item.Key">@item.Value</option>
+                                                                        }
+                                                                    }
+
+                                                                </select>
+                                                                <div class="input-with-placeholder">
+                                                                    <input type="text" placeholder="@CardRes.City *" value="@ViewBag.City" name="City" class="input-with-placeholder__input " id="city">
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-group">
+                                                                <div class="input-with-placeholder">
+                                                                    <input type="text" placeholder="@CardRes.zipcode *" value="@ViewBag.ZipCode" name="zipcode" class="input-with-placeholder__input " id="zipcode">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <div class="input-with-placeholder">
+                                                                <input type="tel" value="@ViewBag.PhoneNumber" name="PhoneNumber" placeholder="@CardRes.Phone *" class="input-with-placeholder__input " id="PhoneNumber">
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <div class="input-with-placeholder">
+                                                                <div class="list-group-select__item list-group-select__item--selected">
+                                                                    <div>
+                                                                        <input name="paymentMethod" checked type="radio" readonly="" value="0">
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>
+                                                                            <img alt="paypal" src="/Content/Images/zarrinpal.png">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-with-placeholder">
+                                                                <div class="list-group-select__item ">
+                                                                    <div>
+                                                                        <input name="paymentMethod" type="radio" readonly="" value="1">
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>
+                                                                            <img alt="paypal" src="/Content/Images/PayPal.png">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <hr>
+
+                                                <div class="cart__total">
+                                                    <div class="cart__total__inner">
+                                                        <div class="cart__total__row">
+                                                            <div>@CardRes.Subtotal</div>
+                                                            <div>$@Model.CartTotal</div>
+                                                        </div>
+                                                        @*<div class="cart__total__row">
+                                                                <div>Shipping</div>
+                                                                @if (ViewBag.Country != null)
+                                                                {
+                                                                    <div>$@ArtShop.Util.CashManager.Instance.GetShipingDHL(ViewBag.Country)</div>
+                                                                }
+
+                                                            </div>*@
+                                                        <hr />
+                                                        <div class="cart__total__row">
+                                                            <div>Sum</div>
+                                                            @*@if (ViewBag.Country != null)
+                                                                {
+                                                                    <div>$@(ArtShop.Util.CashManager.Instance.GetShipingDHL(ViewBag.Country) + Model.CartTotal)</div>
+                                                                }*@
+                                                            @if (ViewBag.Country != null)
+                                                            {
+                                                                <div>$@Model.CartTotal</div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button class="step-submission-button" type="submit">@CardRes.Checkout</button>
+                                                <div class="loading-block"></div>
+                                            </div>
+                                        }
+                                        <footer class="checkout__footer">
+                                            @*<div>
+                                                    <span>
+                                                        © 2017  R24 Online, Inc. Arena Group Commerce. All rights reserved.
+                                                    </span>
+                                                    <span class="checkout__footer__support">
+                                                        Need&nbsp;help?&nbsp;Contact&nbsp;us&nbsp;at&nbsp; <a href="mailto:support@cuber.dev">support@cuber.dev</a>
+                                                    </span>
+                                                </div>*@
+                                            <div>
+                                                <a href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Privacy_policy</a><!-- react-text: 2295 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/copyrightpolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Copyright_policy</a><!-- react-text: 2297 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/terms" target="_blank" rel="noopener noreferrer">@ShareRes.Terms</a>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-4">
+                                    <div class="checkout__sidebar">
+                                        <div class="checkout__sidebar__value-props">
+                                            <div>
+                                                <span class="fa fa-check"></span> @CardRes.r1
+                                            </div>
+                                            <div>
+                                                <span class="fa fa-check"></span> @CardRes.r2
+                                            </div>
+                                            <div>
+                                                <span class="fa fa-lock"></span> @CardRes.r3
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="checkout__sidebar__payment-methods">
+                                            <h5>@CardRes.PaymentMethods</h5>
+                                            <div style="justify-content:unset" class="checkout__sidebar__payment-methods__icons">
+                                                <img alt="ZarrinPal" src="~/Content/Images/zarrinpal.png">
+                                                <img style="margin-left:5px;margin-right:5px" alt="paypal" src="~/Content/Images/PayPal.png">
+
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        @*<div class="checkout__sidebar__two-column">
+                                                <div>
+                                                    <div class="checkout__sidebar__shipping-providers">
+                                                        <h5>@CardRes.DeliveryPartners</h5>
+                                                        <div class="checkout__sidebar__shipping-providers__icons">
+                                                            <img style="width:80%;height:50%;margin-top:10px" alt="Mahex" src="~/Content/Images/mahex.png">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                </div>
+                                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="checkout__footer checkout__footer--mobile">
+                            @*<div>
+                                    <span>
+                                        <!-- react-text: 2286 -->© <!-- /react-text --><!-- react-text: 2287 -->2017<!-- /react-text --><!-- react-text: 2288 --> R24 Online, Inc. Arena Group Commerce. All rights reserved. <!-- /react-text --><!-- react-text: 2289 --> <!-- /react-text -->
+                                    </span>
+                                    <span class="checkout__footer__support">
+                                        <!-- react-text: 2291 -->Need&nbsp;help?&nbsp;Contact&nbsp;us&nbsp;at&nbsp;<!-- /react-text --><a href="mailto:support@cuber.dev">support@cuber.dev</a>
+                                    </span>
+                                </div>*@
+                            <div>
+                                <a href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Privacy_policy</a><!-- react-text: 2295 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/copyrightpolicy" target="_blank" rel="noopener noreferrer">@ShareRes.Copyright_policy</a><!-- react-text: 2297 --> |&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/terms" target="_blank" rel="noopener noreferrer">@ShareRes.Terms</a>
+                            </div>
+                        </footer>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script>
+        jQuery.extend(jQuery.validator.messages, {
+            required: "@CardRes.ValidateRequired",
+            number: "@CardRes.ValidateNumber",
+            digits: "@CardRes.ValidateDigits",
+            maxlength: jQuery.validator.format("@CardRes.ValidateMaxlength {0}"),
+            minlength: jQuery.validator.format("@CardRes.ValidateMinlength {0}."),
+            rangelength: jQuery.validator.format("@CardRes.ValidateRangelength {0} - {1}"),
+            range: jQuery.validator.format("@CardRes.ValidateRange {0} - {1}."),
+            max: jQuery.validator.format("@CardRes.ValidateMax {0}."),
+            min: jQuery.validator.format("@CardRes.ValidateMin {0}.")
+        });
+    </script>
+    <script>
+        $("#mform").validate({
+            rules: {
+                PhoneNumber: {
+                    required: true,
+                    number: true,
+                    minlength: 4
+                },
+                zipcode: {
+                    required: true,
+                    number: true,
+                    minlength: 4
+                },
+                city: {
+                    required: true,
+                },
+                address: {
+                    required: true,
+                    minlength: 5
+                },
+                firstname: {
+                    required: true,
+                    minlength: 2
+                },
+                lastname: {
+                    required: true,
+                    minlength: 2
+                }
+            }
+        });
+    </script>
+
+    <script>
+        $('.list-group-select__item').click(function () {
+            if ($(this).find('input:radio[name=paymentMethod]').is(":checked")) {
+            }
+            else {
+                $(this).find('input:radio[name=paymentMethod]').prop("checked", true);
+                $('.list-group-select__item').removeClass('list-group-select__item--selected');
+                $(this).addClass('list-group-select__item--selected');
+            }
+        });
+
+        $('input[type=checkbox]').click(function (e) {
+            e.stopPropagation();
+        });
+    </script>
+
+</body>
+</html>

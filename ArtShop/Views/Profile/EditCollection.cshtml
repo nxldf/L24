@@ -1,0 +1,303 @@
+﻿@model NewCollectionViewModel
+@using DataLayer.Extentions
+@{
+    ViewBag.Title = "Edit Collection | R24";
+}
+
+@{var IsRighToLeft = CultureHelper.IsRighToLeft();}
+
+@if (IsRighToLeft)
+{
+    <style>
+        body.collections.create .collection-edit .control-group {
+            float: right;
+        }
+
+        body.collections.create .form-horizontal .control-label {
+            float: right;
+            text-align: right;
+        }
+
+        .controls {
+            float: right;
+            text-align: right;
+        }
+
+        .ctextright {
+            text-align: right;
+        }
+
+        .breadcrumbs {
+            float: right;
+        }
+    </style>
+}
+
+<div class="row-layout content">
+    <header>
+        <nav class="row ">
+            <div class="small-12 medium-12 columns">
+                <ul class="breadcrumbs">
+                    @if (IsRighToLeft)
+                    {
+                        <li><a href="#">@Model.CollectionTitle</a></li>
+                        <li><a class="so-quick-tip" href="/@CultureHelper.GetCurrentCulture()/profile/collection" oldtitle="Browse collections">@ShareRes.Collections</a></li>
+
+                    }
+                    else
+                    {
+                        <li><a class="so-quick-tip" href="/@CultureHelper.GetCurrentCulture()/profile/collection" oldtitle="Browse collections">@ShareRes.Collections</a></li>
+                        <li><a href="#">@Model.CollectionTitle</a></li>
+                    }
+                </ul>
+                <!--<ul class="breadcrumbs">
+                    <li><a href=""><i class="fa fa-caret-left"></i> Back to Profile</a></li>
+                    <li><a href="/account/collection/">Collections</a></li>
+                    <li></li>
+                </ul>-->
+            </div>
+
+        </nav>
+        <div class="row">
+            <div class="small-12 columns">
+                <h1 class="ctextright">@Model.CollectionTitle</h1>
+            </div>
+        </div>
+
+    </header>
+        <div class="row">
+            <div class="small-12 columns collection-edit bgtext">
+
+                @using (Html.BeginForm("editcollection", "Profile", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken();
+                    <input id="CollectionId" name="CollectionId" type="hidden" value="@Model.CollectionId" />
+
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="control-group">
+
+                        @Html.LabelFor(m => m.CollectionTitle, new { @class = "control-label required" })
+                        <div class="controls">
+                            @Html.TextBoxFor(m => m.CollectionTitle, new { @class = "input-xlarge" })
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        @Html.LabelFor(m => m.CollectionDescription, new { @class = "control-label optional" })
+                        <div class="controls">
+                            @Html.TextAreaFor(m => m.CollectionDescription, new { @class = "input-xlarge", cols = "80", rows = "4" })
+                        </div>
+                    </div>
+
+                    @*<div class="control-group" style="padding-left: 19px;">
+                    <label for="collection_type_id" class="control-label required">Type</label>
+                    <br />
+                    @{var typeCommunity = ""; var typePortfolio = ""; }
+                    @if (Model.CollectionType == CollectionType.Community)
+                    {
+                        typeCommunity = "checked";
+                    }
+                    else
+                    {
+
+                        typePortfolio = "checked";
+                    }
+
+
+
+                    <div class="controls">
+                        <input type="radio" value="Community" name="CollectionType" @typeCommunity style="display:inline-block;" /> Community
+                        <br />
+                        <input type="radio" value="Portfolio" name="CollectionType" @typePortfolio style="display:inline-block;" /> Portfolio
+                    </div>
+                </div>*@
+
+                    <div class="control-group">
+                        <label for="collection_type_id" class="control-label required">@ProfileRes.Type</label>
+                        <br />
+                        @{var typeCommunity = ""; var typePortfolio = ""; }
+                        @if (Model.CollectionType == CollectionType.Community)
+                        {
+                            typeCommunity = "checked";
+                        }
+                        else
+                        {
+
+                            typePortfolio = "checked";
+                        }
+
+
+                        <div style="clear:both"></div>
+                        @if (IsRighToLeft)
+                        {
+                            <div class="controls">
+                                <div style="clear:both"></div>
+                                @ProfileRes.Community <input type="radio" value="Community" name="CollectionType" @typeCommunity style="display:inline-block;" />
+                                <br />
+                                <div style="clear:both"></div>
+                                @ProfileRes.Portfolio <input type="radio" value="Portfolio" name="CollectionType" @typePortfolio style="display:inline-block;" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="controls">
+                                <input type="radio" value="Community" name="CollectionType" @typeCommunity style="display:inline-block;" /> @ProfileRes.Community
+                                <br />
+                                <input type="radio" value="Portfolio" name="CollectionType" @typePortfolio style="display:inline-block;" /> @ProfileRes.Portfolio
+                            </div>
+                        }
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            @if (IsRighToLeft)
+                            {
+                                @Html.DisplayNameFor(m => m.IsPrivate) <text>&nbsp;</text>
+                                @Html.CheckBoxFor(m => m.IsPrivate, new { @style = "display:inline-block" })
+                            }
+                            else
+                            {
+                                @Html.CheckBoxFor(m => m.IsPrivate, new { @style = "display:inline-block" })
+                                @Html.DisplayNameFor(m => m.IsPrivate)
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <input type="submit" name="Submit" id="Submit" value="@ProfileRes.Submit" class="button btn-info">
+                        </div>
+                    </div>
+                            }
+                <!-- Extra form fields for AA Selection -->
+            </div>
+        </div>
+
+
+<div class="row">
+    <div class="small-12 columns">
+        <ul class="item-list masonry" style="position: relative;">
+            @foreach (var item in Model.collectionProduct)
+            {
+                <li itemscope="" itemtype="http://schema.org/CreativeWork" class="art-item fast-fade " style="position: absolute; left: 0px; top: 0px;">
+                    <div class="list-art-image" itemscope="" itemtype="http://schema.org/ImageObject">
+                        <div class="list-art-image-wrapper">
+                            <a href="@Url.Action( @item.product.category.Current().Name,"Artwork", new { id = @item.product.GenerateSlug() })" itemprop="url">
+                                <img src="@item.product.photo.Path">
+                            </a>
+                        </div>
+                        <div class="item-controls">
+                            <a href="/Card/AddToCart?id=@item.Id&type=@((int)Ordertype.Orginal)" class="btn-round btn-add-to-cart" style="background-color:rgba(0,0,0,0.6)" title="Add to Cart">
+                                <i class="fa fa-shopping-cart" style="color:white"></i>
+                            </a>
+                            <a onclick="addfav(this,@item.Id)" style="background-color:rgba(0,0,0,0.6)" class="btn-round btn-favorite" title="Add to Favorites">
+                                <i class="fa fa-heart" style="color:white"></i>
+                            </a>
+                            <a onclick="addcollect(@item.Id)" style="background-color:rgba(0,0,0,0.6)" class="btn-round btn-add-to-collection hide-for-small-down" title="Add to Collection">
+                                <i class="fa fa-plus" style="color:white"></i>
+                            </a>
+                        </div>
+                        <div class="list-art-meta">
+                            <h4 class="list-art-title left ellipsis" itemprop="name">
+                                <a href="@Url.Action( @item.product.category.Current().Name,"Artwork", new { id = @item.product.GenerateSlug() })">@item.product.Title</a>
+                            </h4>
+                            <small class="art-category clear left">@item.product.category.Current().Name, <span>@item.product.Height  H</span> x <span> @item.product.Width  W</span> x <span> @item.product.Depth </span> cm</small>
+
+                            <div class="list-author clear left">
+                                <h5 class="Agency-name left ellipsis" itemprop="creator" itemscope itemtype="http://schema.org/Person">
+                                    <a href="@Url.Action( @item.product.category.Current().Name,"Artwork", new { id = @item.product.GenerateSlug() })" class="Agency-card" title="Profile page for Terri Dilling" itemprop="url">@item.product.user.FirstName  @item.product.user.LastName</a>
+                                </h5>
+                                <h5 class="user-location ellipsis clear" itemprop="contentLocation">
+                                    @if (item.product.user.country != null)
+                                    {
+                                        <span>@item.product.user.country.Translations.SingleOrDefault(x => x.languageId == System.Globalization.CultureInfo.CurrentCulture.Name.Substring(0, 2)).Name</span>
+                                    }
+                                </h5>
+                            </div>
+
+                            <div class="list-art-price">
+                                @if (item.product.ISOrginalForSale)
+                                {
+                                    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                        <div itemprop="price">
+                                            $@item.product.Price
+                                        </div>
+                                    </div>
+                                }
+                                <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                    <div class="sample-print-price" itemprop="price">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="so-collection-art-remove btn btn-danger btn-mini so-quick-tip" style="color:#fff;" href="#" onclick="Remove(@item.collectionId,@item.Id)" oldtitle="Remove from Collection" aria-describedby="ui-tooltip-4">x</a>
+                </li>
+            }
+
+        </ul>
+    </div>
+</div>
+
+    <script src="~/Content/fullview.js"></script>
+
+    <script>
+    Saatchi.Loader.load('hslpicker', { js: true });
+    Saatchi.Loader.load('browse', { js: true }, function () {
+        Saatchi.Browse.init();
+    });
+    Saatchi.Loader.load('fullview', { js: true }, function () {
+        Saatchi.Fullview.init();
+        Saatchi.Fullview.SetView.init();
+        Saatchi.Fullview.FullScreen.init();
+    });
+    Saatchi.Loader.load('favorite', { js: true }, function () {
+        Saatchi.Favorite.init();
+    });
+    $('.joyride-tip-guide').delay(5000).fadeOut('slow');
+    var observer;
+    if (observer) {
+        observer.disconnect();
+    }
+    </script>
+<script>
+
+
+    //$(document).ready(
+    //    function () {
+    //        $('.art-item').append('<a title="Remove from Collection" class="so-collection-art-remove btn btn-danger btn-mini so-quick-tip" style="color:#fff;" href="#">x</a>');
+    //        $('a.so-collection-art-remove').on('click', function (e) {
+    //            e.preventDefault();
+    //            removeFromCollection($(this));
+    //        });
+    //        Saatchi.Collect.isPrivateSelected($('#privacy'));
+    //    }
+    //);
+
+    function Remove(Cid,Aid) {
+
+        if (confirm("Are you sure you want to remove that image?")) {
+            $.get('/@CultureHelper.GetCurrentCulture()/profile/DeletArtwork?CollectionId=' + Cid + '&ArtworkId=' + Aid,
+                 function (response) {
+                     
+                     location.reload();
+                 }
+             );
+        }
+    }
+
+    //function removeFromCollection(element) {
+    //    var data = element.parent().find('.item-controls').data();
+    //    data.collection = 192521;
+    //    data.owner = 994144;
+    //    if (confirm("Are you sure you want to remove that image?")) {
+    //        var artItem = element.closest('.art-item');
+    //        artItem.css('opacity', .45);
+     
+    //    }
+    //}
+
+</script>
+<div class="clearfix"></div>
+</div>

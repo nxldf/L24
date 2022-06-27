@@ -1,0 +1,151 @@
+﻿@model List<CollectionViewModel>
+@{
+    ViewBag.Title = "Collection | R24";
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl;float:right !important; text-align:right !important" : "";
+    var rtldirection = IsRighToLeft ? "direction:rtl !important;text-align:right !important" : "";
+    var rtlPosition = IsRighToLeft ? "margin-right:40px !important" : "";
+    var pricertl = IsRighToLeft ? "left:0;right:auto;text-align:left;" : "";
+}
+
+@if (IsRighToLeft)
+{
+    <style>
+        .collection-title {
+          font-size: 14px !important;
+        }
+    </style>
+}
+
+<div role="main" class="row row-layout profile-content">
+
+
+    <header class="small-12 columns" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+
+        <a href="/@CultureHelper.GetCurrentCulture()/publicprofile?id=@ViewBag.id" title="@ViewBag.ProfileFullName 's profile" itemprop="url">
+            @if (!String.IsNullOrEmpty(ViewBag.PhotoPath))
+            {
+                if (((string)ViewBag.PhotoPath).Contains("https"))
+                {
+                    <img src="@ViewBag.PhotoPath" alt="avatar" class="avatar" itemprop="image">
+                }
+                else
+                {
+                    <img src="/@ViewBag.PhotoPath" alt="avatar" class="avatar" itemprop="image">
+                }
+            }
+            else
+            {
+                <img src="//d3t95n9c6zzriw.cloudfront.net/common/profile/avatar_tiny_square.jpg" alt="avatar" class="avatar" itemprop="image">
+            }
+
+            <h1 class="profile-subpage-name ellipsis" itemprop="name">@ViewBag.ProfileFullName</h1>
+            <i class="fa fa-caret-left"></i> @ProfileRes.Back_to_profile
+        </a>
+
+    </header>
+
+    <div class="profile-nav large-12 columns">
+        <a style="@rtldirection" href="/@CultureHelper.GetCurrentCulture()/publicprofile/artworks?id=@ViewBag.id" class="">
+            <i class="fa fa-suitcase"></i> @ProfileRes.Artwork  <span>(@ViewBag.artworksCount)</span>
+        </a>
+        <a style="@rtldirection" href="/@CultureHelper.GetCurrentCulture()/publicprofile/collection?id=@ViewBag.id" class="active">
+            <i class="fa fa-th"></i> @ProfileRes.Collections <span>(@Model.Count)</span>
+        </a>
+        <a style="@rtldirection" href="/@CultureHelper.GetCurrentCulture()/publicprofile/favorites?id=@ViewBag.id" class="">
+            <i class="fa fa-heart"></i> @ProfileRes.Favorites <span>(@ViewBag.favoritesCount)</span>
+        </a>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <ul id="infinite" class="item-list">
+            @foreach (CollectionViewModel item in Model)
+            {
+                <li class="list-item collection">
+                    <div class="small-12 columns">
+                        <a href="/@CultureHelper.GetCurrentCulture()/publicprofile/CollectionView?userid=@ViewBag.id&id=@item.CollectionId" title="@item.CollectionName">
+                            @if (item.collectionProduct.First().product != null)
+                            {
+                                <img src="@item.collectionProduct.First().product.Widephoto.Path" alt="">
+                            }
+                            else
+                            {
+                                <img src="//d3t95n9c6zzriw.cloudfront.net/common/placeholder-square-93.jpg" style="width:300px;height:197px;" alt="" nopin="nopin">
+                            }
+
+                        </a>
+                    </div>
+                    <div class="row">
+                        @for (int i = 1; i <= 3; i++)
+                        {
+
+                            var art = item.collectionProduct[i];
+
+                            if (art.product == null)
+                            {
+                                <div class="small-4 columns">
+                                    <a href="/@CultureHelper.GetCurrentCulture()/publicprofile/CollectionView?userid=@ViewBag.id&id=@item.CollectionId" title="@item.CollectionName">
+                                        <img src="//d3t95n9c6zzriw.cloudfront.net/common/placeholder-square-93.jpg" alt="" nopin="nopin">
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+
+                                <div class="small-4 columns">
+                                    <a href="/@CultureHelper.GetCurrentCulture()/publicprofile/CollectionView?userid=@ViewBag.id&id=@item.CollectionId" title="@item.CollectionName">
+                                        <img src="@art.product.Sqphoto.Path" alt="test collection item" nopin="nopin">
+                                    </a>
+                                </div>
+                            }
+                        }
+
+                    </div>
+
+
+                    <div class="row collection-meta">
+                        <h4 class="collection-title">
+                            <a href="/@CultureHelper.GetCurrentCulture()/publicprofile/CollectionView?userid=@ViewBag.id&id=@item.CollectionId" title="@item.CollectionName">
+                                <span class="ellipsis">@item.CollectionName</span> <span class="count">(@item.CollectionProductCount)</span>
+                            </a>
+                        </h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+            }
+
+        </ul>
+        <div class="clearfix"></div>
+        <div id="pageNav" class="hidden">
+            <a href="/account/collection/id/994144/format/json/page/2"></a>
+        </div>
+        <div id="pageLoading"></div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+
+<script src="~/Content/fullview.js"></script>
+<script>
+    Saatchi.Loader.load('hslpicker', { js: true });
+    Saatchi.Loader.load('browse', { js: true }, function () {
+        Saatchi.Browse.init();
+    });
+    Saatchi.Loader.load('fullview', { js: true }, function () {
+        Saatchi.Fullview.init();
+        Saatchi.Fullview.SetView.init();
+        Saatchi.Fullview.FullScreen.init();
+    });
+    Saatchi.Loader.load('favorite', { js: true }, function () {
+        Saatchi.Favorite.init();
+    });
+
+    $('.joyride-tip-guide').delay(5000).fadeOut('slow');
+
+    var observer;
+    // stop observing
+    if (observer) {
+        observer.disconnect();
+    }
+
+</script>

@@ -1,0 +1,546 @@
+﻿@model HomeIndexViewModel
+
+@{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "margin-top:3px" : "";
+    var menuRTL = IsRighToLeft ? "direction:rtl !important" : "";
+    var menuPadding = IsRighToLeft ? "padding:0 50px 0 50px !important;width:auto !important" : "";
+}
+
+
+<style>
+    .dropbtn {
+        padding: 0 !important;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+        .dropbtn:hover, .dropbtn:focus {
+            background-color: #3e8e41;
+        }
+
+    .dropdown {
+        float: right;
+        position: relative;
+        display: inline-block;
+        padding: 12px 10px !important;
+        border-right: none;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        left: 0;
+        z-index: 3;
+        top: 42px;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 5px 5px;
+            text-decoration: none;
+            display: block;
+        }
+
+    .dropdown a:hover {
+        background-color: rgba(164, 205, 255, 0.24);
+    }
+
+    .show {
+        display: block;
+    }
+
+    .lnsp {
+    }
+
+        .lnsp:hover {
+            text-decoration: none;
+        }
+</style>
+<style>
+    @@keyframes blink {
+        0% {
+            opacity: .8;
+        }
+
+        9% {
+            opacity: .4;
+        }
+
+        19% {
+            opacity: .5;
+        }
+
+        29% {
+            opacity: .6;
+        }
+
+        39% {
+            opacity: .75;
+        }
+
+        49% {
+            opacity: .85;
+        }
+
+        50% {
+            opacity: .9;
+        }
+    }
+
+    .blink {
+        animation: blink 2s infinite;
+    }
+</style>
+
+<header>
+    <div class="desktop-navigation desktop-navigation--saatchiart">
+        <div class="desktop-navigation__context-bar" style="background-color:#3e3e3e">
+            <div class="desktop-navigation__context-bar__inner">
+                <div class="desktop-navigation__context-bar__left">
+                    <div class="desktop-navigation__context-links">
+                        <div class="dropdown dropdownx" style="background-color:rgba(37, 62, 93, 0.95);">
+                            <a class="desktop-navigation__context-link" id="thethingy">
+                                @if (culture == "en-us")
+                                {
+                                    <img style="width:auto;float:left;opacity:1;height:24px;margin-top:2px" class="pchl desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/united-states.svg">
+                                    <span class="lnsp" style="padding-left:5px;color:white;font-size:13px"><i style="padding-top:7px" class="fa fa-caret-down"></i></span>
+                                }
+                                else
+                                {
+                                    <img style="width:auto;float:left;opacity:1;@rtlstl;height:24px" class="pchl desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/iran.svg">
+                                    <span class="lnsp" style="padding-left:5px;color:white;font-size:13px"><i style="padding-top:7px" class="fa fa-caret-down"></i></span>
+                                }
+
+                            </a>
+                            <div class="dropdown-content">
+                                <a href="/fa/Home/SetCulture?culture=fa&requestUrl=@Request.RawUrl">
+                                    <img style="width:40px;float:left;opacity:1;@rtlstl" class="desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/iran.svg">
+                                    <span style="padding-left:5px;color:black;font-size:13px">فارسی</span>
+                                </a>
+                                <a href="/en-us/Home/SetCulture?culture=en-us&requestUrl=@Request.RawUrl">
+                                    <img style="width:40px;float:left;opacity:1;" class="desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/united-states.svg">
+                                    <span style="padding-left:5px;color:black;font-size:13px">English</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="desktop-navigation__context-bar__right">
+                    @Html.Partial("_LoginPartial")
+                    <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/checkout" class="navigation__cart-link">
+                        <div class="navigation__cart-link__count">@ViewBag.card</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27 21"><g fill="none" fill-rule="evenodd" stroke="#ffffff" transform="translate(0 1)"><path stroke="#ffffff" stroke-linecap="round" d="M0 .478h4.667l3.734 13.077H23.35l2.804-8.635"></path><circle cx="21.25" cy="17.669" r="1.635" fill="#333"></circle><circle cx="10.232" cy="17.924" r="1.635" fill="#333"></circle></g></svg>
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="desktop-navigation__header-bar">
+            <div class="desktop-navigation__container">
+                <div class="desktop-navigation__header-bar__inner">
+                    <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/" class="navigation__logo"><img style="height:auto;width:125px;image-rendering:-webkit-optimize-contrast" src="~/Content/Images/logo.png?d=@DateTime.Now.Second" /></a>
+                    <div class="desktop-navigation__site-links">
+                        <div class="desktop-navigation__site-links__indicator"></div>
+
+                        @if (IsRighToLeft)
+                        {
+                            <div data-index="0" class="desktop-navigation__site-link">
+                                <div class="desktop-navigation__site-link__title">
+                                    <a data-gtm-event="nav header"
+                                       href="https://eyes.cuber.dev"
+                                       class="desktop-navigation__site-link__title__link">
+                                        @ShareRes.Blog
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+                        @for (int i = 0; i < Model.Navigation.Count; i++)
+                        {
+                            int j = IsRighToLeft ? i + 1 : i;
+                            int it = IsRighToLeft ? Model.Navigation.Count - i - 1 : i;
+                            <div data-index="@j" class="desktop-navigation__site-link">
+                                <div class="desktop-navigation__site-link__title">
+
+                                    @if (Model.Navigation[it].Id == 12)
+                                    {
+                                        <a style="color:#ec008c" data-gtm-event="nav header"
+                                           href="/@CultureHelper.GetCurrentCulture()/search/@Model.Navigation[it].Id/0/0/0/0"
+                                           class="desktop-navigation__site-link__title__link">
+
+                                            @Model.Navigation[it].Name
+
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a data-gtm-event="nav header"
+                                           href="/@CultureHelper.GetCurrentCulture()/search/@Model.Navigation[it].Id/0/0/0/0"
+                                           class="desktop-navigation__site-link__title__link">
+
+                                            @Model.Navigation[it].Name
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        @if (!IsRighToLeft)
+                        {
+                            <div data-index="7" class="desktop-navigation__site-link">
+                                <div class="desktop-navigation__site-link__title">
+                                    <a data-gtm-event="nav header"
+                                       href="http://eyes.cuber.dev"
+                                       class="desktop-navigation__site-link__title__link">
+                                        @ShareRes.Blog
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+
+                        <div class="desktop-navigation__dropdown">
+
+                            @for (int x = 0; x < Model.Navigation.Count; x++)
+                            {
+                                int j = IsRighToLeft ? x + 1 : x;
+                                int i = IsRighToLeft ? Model.Navigation.Count - x - 1 : x;
+
+                                <div data-index="@j" class="desktop-navigation__dropdown__inner">
+
+                                    <div class="desktop-navigation__dropdown__sections" style="@menuRTL">
+                                        <div class="desktop-navigation__dropdown__section" style="@menuPadding">
+                                            <div class="desktop-navigation__dropdown__section-title">
+                                                @ShareRes.Style
+                                            </div>
+
+                                            <div class="desktop-navigation__dropdown__section-links">
+                                                @foreach (var item in Model.Navigation[i].FavStyles)
+                                                {
+                                                    <a data-gtm-event="nav header"
+                                                       class="desktop-navigation__dropdown__section-link"
+                                                       href="/@CultureHelper.GetCurrentCulture()/search/@Model.Navigation[i].Id/@item.Id/0/0/0">
+                                                        @item.Name
+                                                    </a>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="desktop-navigation__dropdown__section" style="@menuPadding">
+                                            <div class="desktop-navigation__dropdown__section-title">
+                                                @ShareRes.Subject
+                                            </div>
+
+                                            <div class="desktop-navigation__dropdown__section-links">
+                                                @foreach (var item in Model.Navigation[i].FavSubjects)
+                                                {
+                                                    <a data-gtm-event="nav header"
+                                                       class="desktop-navigation__dropdown__section-link"
+                                                       href="/@CultureHelper.GetCurrentCulture()/search/@Model.Navigation[i].Id/0/@item.Id/0/0">
+                                                        @item.Name
+                                                    </a>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="desktop-navigation__dropdown__section" style="@menuPadding">
+                                            <div class="desktop-navigation__dropdown__section-title">
+                                                @ShareRes.Medium
+                                            </div>
+
+                                            <div class="desktop-navigation__dropdown__section-links">
+                                                @foreach (var item in Model.Navigation[i].FavMediums)
+                                                {
+                                                    <a data-gtm-event="nav header"
+                                                       class="desktop-navigation__dropdown__section-link"
+                                                       href="/@CultureHelper.GetCurrentCulture()/search/@Model.Navigation[i].Id/0/0/@item.Id/0">
+                                                        @item.Name
+                                                    </a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                    <form action="/@CultureHelper.GetCurrentCulture()/qsearch/art" class="desktop-navigation__search">
+                        <button class="desktop-navigation__search__button" type="submit"><img class="desktop-navigation__search__mag" src="~/Content/Images/mag-glass.svg" /></button>
+                        <input name="query" type="text" class="desktop-navigation__search__input" placeholder="@ShareRes.Art" autocomplete="off" value="">
+                        <div class="desktop-navigation__search__caret">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 8"><g fill="none" fill-rule="evenodd" stroke="#333" stroke-linecap="square"><path d="M1 0l7.071 7.071M8.5 7.5l7-7"></path></g></svg>
+                        </div>
+                        <div tabindex="0" class="desktop-navigation__search__dropdown dropdown-menu">
+                            <div class="link-standard desktop-navigation__search__dropdown__item--active" data-path="/@CultureHelper.GetCurrentCulture()/qsearch/art">@ShareRes.Art</div>
+                            <div class="link-standard" data-path="/@CultureHelper.GetCurrentCulture()/qsearch/Agency">@ShareRes.Agency</div>
+                            <div class="link-standard" data-path="/@CultureHelper.GetCurrentCulture()/qsearch/collection">@ShareRes.Collection</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-navigation">
+        <div class="mobile-navigation__menu">
+            <div class="mobile-navigation__backdrop"></div>
+            <div class="mobile-navigation__menu__inner">
+                <div class="hamburger mobile-navigation__hamburger">
+                    <div class="hamburger__line"></div>
+                    <div class="hamburger__line"></div>
+                    <div class="hamburger__line"></div>
+                </div>
+                <div class="mobile-navigation__content">
+                    <div class="mobile-navigation__menu__logo">
+                        <a data-gtm-event="nav header" href="/" class="navigation__logo navigation__logo--saatchiart">
+                            <img src="~/Content/Images/logo.png?d=@DateTime.Now.Second" style="image-rendering:-webkit-optimize-contrast" />
+                        </a>
+                    </div>
+                    <div class="mobile-navigation__site-links">
+                        <div>
+                            <a style="color:#ff5592" href="https://cuber.dev/@CultureHelper.GetCurrentCulture()/search?category=12&style=0&subject=0&medium=0&price=0&page=1" data-gtm-event="nav header" class="mobile-navigation__site-link">
+                                Marked Prints
+                            </a>
+
+                        </div>
+                        @if (Request.IsAuthenticated)
+                        {
+
+                            <div>
+                                <a data-gtm-event="nav header" data-index="0" class="mobile-navigation__site-link">
+                                    @ShareRes.AccountInformation
+                                    <img class="mobile-navigation__site-link__arrow-indicator" src="~/Content/Images/caret-right.svg" />
+                                </a>
+
+                                <div data-index="0" class="mobile-navigation__menu__panel">
+                                    <div class="mobile-navigation__menu__panel__header">
+                                        <img src="~/Content/Images/caret-left.svg" class="mobile-navigation__menu__panel__back" />
+                                        <a data-gtm-event="nav header" class="mobile-navigation__menu__panel__header__title">
+                                            @ShareRes.AccountInformation
+                                        </a>
+                                    </div>
+
+
+                                    <div>
+                                        <a data-gtm-event="nav header" class="mobile-navigation__site-link mobile-navigation__site-link--section-header" href="/accountInfo/index">
+                                            @User.Identity.Name
+                                        </a>
+
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/profile" class="mobile-navigation__site-link">
+                                            @ShareRes.Profile
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/accountInfo/index" class="mobile-navigation__site-link">
+                                            @ShareRes.AccountInformation
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/profile/favorites" class="mobile-navigation__site-link">
+                                            @ShareRes.Favorites
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/profile/collection" class="mobile-navigation__site-link">
+                                            @ShareRes.Collections
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/accountInfo/orders" class="mobile-navigation__site-link">
+                                            @ShareRes.Orders
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/upload/review" class="mobile-navigation__site-link">
+                                            @ShareRes.Upload
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/profile/artworks" class="mobile-navigation__site-link">
+                                            @ShareRes.Artworks
+                                        </a>
+                                        <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/accountInfo/salesdashboard" class="mobile-navigation__site-link">
+                                            @ShareRes.SalesDashboard
+                                        </a>
+                                        <a data-gtm-event="nav header" href="javascript:document.getElementById('logoutForm').submit()" class="mobile-navigation__site-link">
+                                            @ShareRes.Logout
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div>
+                                <a data-gtm-event="nav header"
+                                   href="/@CultureHelper.GetCurrentCulture()/account/login"
+                                   data-index="0"
+                                   class="mobile-navigation__site-link">
+                                    @ShareRes.SignIn
+                                </a>
+                            </div>
+                            <div>
+                                <a data-gtm-event="nav header"
+                                   href="/@CultureHelper.GetCurrentCulture()/account/register"
+                                   data-index="1"
+                                   class="mobile-navigation__site-link">
+                                    @ShareRes.Register
+                                </a>
+                            </div>
+
+                        }
+                        @{ int count = 0;}
+                        @foreach (var item in Model.Navigation)
+                        {
+                            count++;
+                            <div>
+                                <a data-gtm-event="nav header"
+                                   data-index="@count"
+                                   class="mobile-navigation__site-link">
+                                    @item.Name
+                                    <img class="mobile-navigation__site-link__arrow-indicator" src="~/Content/Images/caret-right.svg" />
+                                </a>
+                                <div data-index="@count" class="mobile-navigation__menu__panel">
+                                    <div class="mobile-navigation__menu__panel__header">
+                                        <img src="~/Content/Images/caret-left.svg"
+                                             class="mobile-navigation__menu__panel__back" />
+                                        <a data-gtm-event="nav header"
+                                           class="mobile-navigation__menu__panel__header__title"
+                                           href="/@CultureHelper.GetCurrentCulture()/search/@item.Id/0/0/0/0">
+                                            @item.Name
+                                        </a>
+                                    </div>
+                                    <div class="mobile-navigation__menu__panel__image-container">
+                                        <a data-gtm-event="nav header"
+                                           href="/@CultureHelper.GetCurrentCulture()/search/@item.Id/0/0/0/0"
+                                           class="mobile-navigation__menu__panel__image"
+                                           style="background-image: url(@item.Photo)">
+                                            <div class="mobile-navigation__menu__panel__image__title">
+                                                @ShareRes.Featured @item.Name
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div>
+                                        <a data-gtm-event="nav header"
+                                           class="mobile-navigation__site-link mobile-navigation__site-link--section-header">
+                                            @ShareRes.Style
+                                        </a>
+
+                                        @foreach (var style in item.FavStyles)
+                                        {
+                                            <a data-gtm-event="nav header"
+                                               href="/@CultureHelper.GetCurrentCulture()/search/@item.Id/@style.Id/0/0/0"
+                                               class="mobile-navigation__site-link">
+                                                @style.Name
+                                            </a>
+                                        }
+                                    </div>
+                                    <div>
+                                        <a data-gtm-event="nav header"
+                                           class="mobile-navigation__site-link mobile-navigation__site-link--section-header">
+                                            @ShareRes.Subject
+                                        </a>
+
+                                        @foreach (var subject in item.FavStyles)
+                                        {
+                                            <a data-gtm-event="nav header"
+                                               href="/@CultureHelper.GetCurrentCulture()/search/@item.Id/0/@subject.Id/0/0"
+                                               class="mobile-navigation__site-link">
+                                                @subject.Name
+                                            </a>
+                                        }
+                                    </div>
+                                    <div>
+                                        <a data-gtm-event="nav header"
+                                           class="mobile-navigation__site-link mobile-navigation__site-link--section-header">
+                                            @ShareRes.Medium
+                                        </a>
+
+                                        @foreach (var medium in item.FavStyles)
+                                        {
+                                            <a data-gtm-event="nav header"
+                                               href="/@CultureHelper.GetCurrentCulture()/search/@item.Id/0/0/@medium.Id/0"
+                                               class="mobile-navigation__site-link">
+                                                @medium.Name
+                                            </a>
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                        <div>
+                            <a data-gtm-event="nav header" data-index="20" class="mobile-navigation__site-link">
+                                @ShareRes.Languages
+                                <img class="mobile-navigation__site-link__arrow-indicator" src="~/Content/Images/caret-right.svg" />
+                            </a>
+
+                            <div data-index="20" class="mobile-navigation__menu__panel">
+                                <div class="mobile-navigation__menu__panel__header">
+                                    <img src="~/Content/Images/caret-left.svg" class="mobile-navigation__menu__panel__back" />
+                                    <a data-gtm-event="nav header" class="mobile-navigation__menu__panel__header__title">
+                                        @ShareRes.Languages
+                                    </a>
+                                </div>
+
+
+                                <div>
+                                    <a data-gtm-event="nav header" class="mobile-navigation__site-link" href="/fa/Home/SetCulture?culture=fa&requestUrl=@Request.RawUrl">
+                                        <img style="width:40px;float:left;opacity:1;" class="desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/iran.svg">
+                                        <span style="padding-left:5px;color:black;font-size:13px">فارسی</span>
+                                    </a>
+                                    <a data-gtm-event="nav header" class="mobile-navigation__site-link" href="/en-us/Home/SetCulture?culture=en-us&requestUrl=@Request.RawUrl">
+                                        <img style="width:40px;float:left;opacity:1;" class="desktop-navigation__context-logo desktop-navigation__context-logo--saatchiart" src="~/Content/Images/united-states.svg">
+                                        <span style="padding-left:5px;color:black;font-size:13px">English</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div>
+                            <a href="https://eyes.cuber.dev" data-gtm-event="nav header" class="mobile-navigation__site-link">
+                                @ShareRes.Blog
+                            </a>
+                        </div>                 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-navigation__header">
+
+            <div class="mobile-navigation__header__left">
+                <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/" class="navigation__logo navigation__logo--saatchiart"><img style="image-rendering:-webkit-optimize-contrast" src="~/Content/Images/logo.png?d=@DateTime.Now.Second" /></a>
+            </div>
+            <div class="mobile-navigation__header__right">
+                <img class="mobile-navigation__search-trigger" src="https://d3t95n9c6zzriw.cloudfront.net/navigation/mag-glass.svg" />
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/profile/favorites" class="navigation__favorite-link">
+                        <svg viewBox="0 0 23 20" xmlns="http://www.w3.org/2000/svg"><path d="M22 6.54C22 3.48 19.38 1 16.16 1c-1.9 0-3.6.86-4.66 2.2A5.95 5.95 0 0 0 6.84 1C3.62 1 1 3.48 1 6.54c0 1.31.48 2.51 1.28 3.46l9.23 10 9.2-10A5.34 5.34 0 0 0 22 6.54z" stroke="#221F20" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </a>
+                }
+                <a data-gtm-event="nav header" href="/@CultureHelper.GetCurrentCulture()/checkout" class="navigation__cart-link">
+                    <div class="navigation__cart-link__count">@ViewBag.card</div>
+                    <img src="https://d3t95n9c6zzriw.cloudfront.net/navigation/cart.svg" />
+                </a>
+            </div>
+        </div>
+        <form action="/@CultureHelper.GetCurrentCulture()/qsearch/art" class="mobile-navigation__search-container">
+            <div class="mobile-navigation__search-container__background"></div>
+            <svg class="mobile-navigation__search-container__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 21"><g fill="none" fill-rule="evenodd"><rect width="8.903" height="1.25" x="14.747" y="17.027" fill="#333" rx=".625" transform="rotate(45 19.198 17.652)"></rect><ellipse cx="9.274" cy="9.073" stroke="#333" rx="8.774" ry="8.573"></ellipse></g></svg>
+            <input class="mobile-navigation__search-container__input" name="query" autocomplete="off" value="" />
+            <div class="mobile-navigation__search-type-indicator">
+                <div class="mobile-navigation__search-type-indicator__text">
+                    <span>Art</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 8"><g fill="none" fill-rule="evenodd" stroke="#333" stroke-linecap="square"><path d="M1 0l7.071 7.071M8.5 7.5l7-7"></path></g></svg>
+                </div>
+                <select class="mobile-navigation__search-type-selector">
+                    <option value="art">Art</option>
+                    <option value="Agency">Agency</option>
+                    <option value="collection">Collection</option>
+                </select>
+            </div>
+            <svg class="mobile-navigation__search-container__cancel" viewBox="0 0 22 20" xmlns="http://www.w3.org/2000/svg"><g stroke="#000" fill="none" fill-rule="evenodd" stroke-linecap="square"><path d="M1 0l20 20M21 0L1 20"></path></g></svg>
+        </form>
+    </div>
+</header>

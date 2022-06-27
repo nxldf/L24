@@ -1,0 +1,147 @@
+﻿@model AccountInfoViewModel
+@{
+    ViewBag.Title = "Settings | R24";
+}
+
+@{var IsRighToLeft = CultureHelper.IsRighToLeft();}
+
+@if (IsRighToLeft)
+{
+    @Html.Partial("IndexPartial");
+}
+else
+{
+
+    <div class="row-layout content" style="">
+
+        <div class="row">
+            <div class="small-12 large-8 large-push-4 columns bgtext content">
+                <div class="row">
+
+                    @using (Html.BeginForm("Index", "accountinfo", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                        @Html.AntiForgeryToken()
+                        <div class="form">
+                            <div class="small-12 large-9 columns fields">
+
+
+                                @Html.LabelFor(m => m.FirstName, new { @class = "form-label required", requiredprefix = "*" })
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "wide", id = "firstName", name = "firstName", requiredprefix = "", placeholder = "First Name", type = "text" })
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger", style = "color:red;font-size:small;display: none" })
+
+                                @Html.LabelFor(m => m.LastName, new { @class = "form-label required", requiredprefix = "*" })
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "wide", id = "lastName", name = "lastName", requiredprefix = "", placeholder = "Last Name", type = "text" })
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger", style = "color:red;font-size:small;display: none" })
+                                
+                                @Html.LabelFor(m => m.Email, new { @class = "form-label required", requiredprefix = "*" })
+                                @Html.TextBoxFor(m => m.Email, new { @class = "wide disabled", id = "email", name = "email", requiredprefix = "", placeholder = "Email Address", type = "text", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger", style = "color:red;font-size:small;display: none" })
+
+                                @Html.LabelFor(m => m.Password, new { @class = "form-label optional" })
+                                @Html.TextBoxFor(m => m.Password, new { @class = "wide", id = "password", name = "password", requiredprefix = "", placeholder = "New Password", autocomplete = "off", type = "password" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label optional" })
+                                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "wide", id = "ConfirmPassword", name = "ConfirmPassword", placeholder = "Confirm Password", autocomplete = "off", type = "password" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger", style = "color:red;font-size:small;display: none" })
+
+
+                                <div class="form-div">
+                                    <input type="hidden" name="passwordinfo" value="" id="passwordinfo">
+                                    <p class="description"></p><ul class="disc">
+                                        <li>@ProfileRes.Password_desc_1</li>
+                                        <li>@ProfileRes.Password_desc_2</li>
+                                        <li>@ProfileRes.Password_desc_3</li>
+                                    </ul><p></p>
+                                </div>
+    
+
+                                @Html.LabelFor(m => m.MailingList, new { @class = "form-label optional" })
+                                <div class="form-div">
+                                    @Html.CheckBoxFor(m => m.MailingList, new { @style = "display:inline-block" })
+                                </div>
+                                @*<label for="art_upload_email" class="form-label optional">Receive Art Uploaded Email</label>*@
+                                @*@Html.LabelFor(m => m.ReceiveNewArtEmail, new { @class = "form-label optional", style = "line-height: 1rem !important;padding-top: 20px" })
+                                    <div class="form-div">
+                                        @Html.CheckBoxFor(m => m.ReceiveNewArtEmail, new { @style = "display:inline-block" })
+                                    </div>*@
+                            </div>
+
+                            <div class="small-12 large-3 columns fields">
+                                @*<label for="userTypeId" class="form-label optional">Profile Type</label>*@
+                                @Html.LabelFor(m => m.profileType, new { @class = "form-label optional" })
+                                <div class="form-div">
+                                    <label><input type="radio" name="profileType" id="profileType" value="Agency" @(Model.profileType == ProfileType.Agency ? "checked" : "")>@ProfileRes.Agency</label><br>
+                                    <label><input type="radio" name="profileType" id="profileType" value="Collector" @(Model.profileType == ProfileType.Collector ? "checked" : "")>@ProfileRes.Collector</label>
+                                </div>
+                                @*<label for="measurementSystem" class="form-label optional">Units</label>
+                                    <div class="form-div">
+                                        <label><input type="radio" name="measurementSystem" id="measurementSystem-CENTIMETER" value="CENTIMETER" checked="checked">Centimeters (cm)</label><br><label><input type="radio" name="measurementSystem" id="measurementSystem-INCH" value="INCH">Inches (in)</label>
+                                    </div>*@
+                            </div>
+                            @Html.ValidationSummary("", new { @class = "text-danger", style = "color:red;font-size:small;display: -webkit-inline-box" })
+                            <div class="small-12 columns fields">
+                                <div class="form-div">
+                                    <input type="submit" name="Save" id="Save" value="@ProfileRes.Save" class="button btn-info">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="small-12 large-4 large-pull-8 columns bgtext side-nav-container">
+
+                <ul class="side-nav">
+                    <li class="profile active">
+                        <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/index">@ProfileRes.Account_info</a>
+                    </li>
+                    <li class="profile">
+                        <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/profileinformation">
+                            @ProfileRes.Profile_information
+                        </a>
+                    </li>
+
+                    <li class="billing">
+                        <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/billing">@ProfileRes.Address_Identification</a>
+                    </li>
+
+                    <li class="sold">
+                        <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/salesdashboard">@ProfileRes.Sales_Dashboard</a>
+                    </li>
+                    @*<li>
+                            <a style="padding-left:20px;" href="/accounts/upload-tax-form">
+                                Tax
+                                Form
+                            </a>
+                        </li>*@
+
+                    <li class="purchased">
+                        <a href="/@CultureHelper.GetCurrentCulture()/accountinfo/orders">@ProfileRes.Orders</a>
+                    </li>
+
+
+                    @*         <li class="account-sign-out"><a href="/sign-out">@ProfileRes.Logout</a></li>*@
+                </ul>
+
+                <div class="clearfix"></div>
+            </div>
+        </div>        <div class="clearfix"></div>
+    </div>
+
+}
+@section scripts{
+    @if (ViewBag.ischanged)
+    {
+        <script>
+
+            $.toast({
+                heading: '@ShareRes.Success_message',
+                text: '',
+                icon: 'success',
+                showHideTransition: 'slide',
+                position: 'top-right',
+                hideAfter: 7000
+            })
+        </script>
+    }
+
+}

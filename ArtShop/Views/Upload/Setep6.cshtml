@@ -1,0 +1,150 @@
+﻿@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl !important" : "";
+}
+<div id="upload">
+    <div data-reactroot="">
+        <div class="app">
+            <div class="full-bleed full-bleed--background" style="background-color:#f3f3f3">
+                <div class="container artwork__container">
+                    <span></span>
+                    <div class="new-page">
+                        @using (Ajax.BeginForm("Setep6", "Upload", null, new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            UpdateTargetId = "updatediv",
+                            LoadingElementId = "loadingel",
+                            OnBegin = "$('#submit_btn').attr('disabled', 'disabled');",
+                            OnComplete = " $('#submit_btn').removeAttr('disabled', 'disabled');",
+                        }, new { enctype = "multipart/form-data", id = "mform" }))
+                        {
+                            if (!string.IsNullOrEmpty(ViewBag.Error))
+                            {
+                                <div class="wizard__errors">
+                                    <div class="wizard__errors__error">@ViewBag.Error</div>
+                                </div>
+                            }
+                            <div class="new-page__content pane pane--padded pane--centered pane--full">
+                                <div class="progress-component wizard-progress">
+                                    <div class="progress-component__inner" style="transform: translateX(@ViewBag.progress);"></div>
+                                </div>
+                                <div class="dimensions">
+                                    <h1 class="animate-group-0-0">@UploadRes.step6_title</h1>
+                                    <p class="descriptor animate-group-0-1" style="@rtlstl">@UploadRes.step6_description</p>
+                                    <div class="form-group form-group--inline-block dimensions-input animate-group-0-2">
+                                        <div class="input-container"><label for="art_height" style="text-align: center;">@UploadRes.Height</label><input name="Height" type="number" value="0" class="h_num" id="Height" min="0"></div>
+                                        <div class="input-container"><label for="art_width" style="text-align: center;">@UploadRes.Width</label><input name="Width" type="number" value="0" class="w_num" min="0" id="Width"></div>
+                                        <div class="input-container"><label for="art_depth" style="text-align: center;">@UploadRes.Depth</label><input name="Depth" type="number" value="0" class="" step="0.1" min="0" id="Depth"></div>
+                                        <div class="form-group__info">@UploadRes.inches</div>
+                                        <canvas id="myCanvas" class="dimensions-preview-canvas animate-group-0-2" height="400" width="400"></canvas>
+                                    </div>
+                                </div>
+                                <div onclick="callbackpage()" class="wizard-button wizard-button--left"><i class="wizard-button__icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i><div class="wizard-button__text"><span>@UploadRes.step6_pre_click</span></div></div>
+                                <button type="submit" hidden id="submit"></button>
+                                <div class="wizard-button wizard-button--right" onclick="$('#submit').click(); $('#submit').attr('id', 'dontwork');">
+                                    <div class="wizard-button__text"><span>@UploadRes.step6_next_click</span></div><i class="wizard-button__icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i>
+                                </div>
+                                <div class="mobile-status-bar">
+                                    <span><button type="button" onclick="callbackpage();" class="mobile-status-bar__nav mobile-status-bar__nav--left"><i><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i></button></span>
+                                    <span><button type="button" onclick="$('#submit').click(); $('#submit').attr('id', 'dontwork');" class="mobile-status-bar__nav mobile-status-bar__nav--right"><i><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" enable-background="new 0 0 215 370.8" xml:space="preserve"><g><g><polygon points="0,346 24.1,370.8 215,185.4 24.1,0 0,24.9 165.3,185.4 "></polygon></g></g></svg></i></button></span><div class="progress-component mobile-status-bar__progress"><div class="progress-component__inner" style="transform: translateX(0px);"></div></div><span></span>
+                                </div>
+                                <div id="loadingel" hidden style="background:rgba(255, 255, 255, 0.8);position:absolute;top:0;left:0;right:0;bottom:0;z-index:2">
+                                    <i class="fa fa-spinner fa-spin" style="position:absolute;top:45%;left:47%;font-size:40px"></i>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var p = 10;
+        var maxR = 250;
+        var w = maxR;
+        var h = maxR;
+        var width = c.width - 2 * p;
+        var height = c.height - 2 * p;
+        var x = (width - w) / 2;
+        var y = (height - h) / 2;
+        ctx.rect(x, y, w, h);
+        ctx.stroke();
+        ctx.fillText("0 cm", x - 40, y + (h / 2));
+        ctx.fillText("0 cm", x + (w / 2), y - 20);
+
+        function redraw(new_w, new_h) {
+            if (new_w > new_h) {
+                w = maxR;
+                h = maxR * (new_h / new_w);
+            } else {
+                h = maxR;
+                w = maxR * (new_w / new_h);
+            }
+
+            var x = (width - w) / 2;
+            var y = (height - h) / 2;
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.strokeRect(x, y, w, h);
+            ctx.fillText(new_h + " cm", x - 40, y + (h / 2));
+            ctx.fillText(new_w + " cm", x + (w / 2), y - 20);
+        }
+
+        $(".h_num").change(function () {
+            var neww = parseFloat($(".w_num").val());
+            var newh = parseFloat( $(".h_num").val());
+            redraw(neww, newh);
+        });
+        $(".w_num").change(function () {
+            var neww = parseFloat($(".w_num").val());
+            var newh = parseFloat($(".h_num").val());
+            redraw(neww, newh);
+        });
+</script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script>
+        $("#mform").validate({
+            rules: {
+                Height: {
+                    required: true,
+                    number: true
+                },
+                Width: {
+                    required: true,
+                    number: true
+                },
+                Depth: {
+                    required: true,
+                    number: true
+                }
+            }
+        });
+</script>
+
+<script>
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+
+    function callbackpage() {
+        $.ajax({
+            type: 'get',
+            url: '/@CultureHelper.GetCurrentCulture()/upload/Setep5',
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $('#updatediv').html(data);
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+</script>

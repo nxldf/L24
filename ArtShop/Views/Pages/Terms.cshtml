@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Terms | R24";
+}
+<style>
+    li {
+        list-style-type: unset !important;
+        list-style-position:inside !important;
+    }
+        ul {
+        list-style-type: unset !important;
+        list-style-position: inside !important;
+    }
+</style>
+
+@model SitePageTranslation
+
+@using DataLayer.Extentions
+@{var IsRighToLeft = CultureHelper.IsRighToLeft();}
+
+@if (IsRighToLeft)
+{
+    @Html.Partial("TermsRTL");
+}
+else
+{
+<div class="row-layout content">
+    <div class="row">
+        <div class="small-12 large-8 large-push-4 columns bgtext content">
+            <div id="so-terms-page" class="row">
+                @*<h1 class="page-title">R24 Copyright Policy</h1>*@
+                @Html.Raw(Model.Content)
+            </div>
+        </div>
+        <div class="small-12 large-4 large-pull-8 columns bgtext side-nav-container">
+            <ul class="side-nav" >
+                <li style="list-style-type:none !important"><a href="/@CultureHelper.GetCurrentCulture()/pages/about">@ShareRes.About</a></li>
+                <li style="list-style-type:none !important"><a href="/@CultureHelper.GetCurrentCulture()/pages/terms" class="active">@ShareRes.Terms</a></li>
+                <li style="list-style-type:none !important"><a href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy" >@ShareRes.Privacy_policy</a></li>
+                <li style="list-style-type:none !important"><a href="/@CultureHelper.GetCurrentCulture()/pages/copyrightpolicy">@ShareRes.Copyright_policy</a></li>
+                <li style="list-style-type:none !important"><a href="/@CultureHelper.GetCurrentCulture()/pages/contactus">@ShareRes.Contactus</a></li>
+                <li style="list-style-type:none !important"><a href="/@CultureHelper.GetCurrentCulture()/pages/logo">@ShareRes.Logo</a></li>
+            </ul>
+        </div>
+
+        <script>if ($(window).width() > 1023) { $('.bgtext.content').imagesLoaded(function () { var sidebarHeight = $('.bgtext.content').height(); $('.side-nav').height(sidebarHeight); }); }</script>
+    </div>
+    <div class="clearfix"></div>
+</div>
+}

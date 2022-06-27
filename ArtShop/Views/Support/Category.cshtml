@@ -1,0 +1,60 @@
+﻿@using DataLayer.Extentions;
+@model SupportCategory
+@{
+    ViewBag.Title = Model.Current().Name + " | R24";
+    Layout = "~/Views/Support/_SupportLayout.cshtml";
+}
+
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl;text-align:right !important" : "";
+    var rtlListType = IsRighToLeft ? "list-style-position:inside !important" : "";
+    var rtlFloat = IsRighToLeft ? "float:left !important" : "";
+
+}
+<main role="main">
+    <nav class="sub-nav clearfix category-breadcrumbs">
+        <ol style="@rtlstl" class="breadcrumbs">
+            <li title="R24">
+                <a href="/@CultureHelper.GetCurrentCulture()/Support">R24</a>
+            </li>
+            <li title="Getting Started ">
+
+                @Model.Current().Name
+
+            </li>
+        </ol>
+
+    </nav>
+
+    <section class="clearfix">
+        <h1 style="@rtlstl" id="category-title">@Model.Current().Name </h1>
+        <a style="@rtlFloat" class="submit-a-request" href="/@CultureHelper.GetCurrentCulture()/support/requests">@ShareRes.Submit_request</a>
+
+        <div style="@rtlstl" class="section-tree">
+            @foreach (var item in Model.supportSubCategories)
+            {
+                <section class="section">
+                    <h3 style="@rtlstl">
+                        <a href="@Url.Action("SubCategory", "Support", new { id = @item.GenerateSlug() })">@item.Current().Name</a>
+                    </h3>
+
+                    <ul style="@rtlstl;@rtlListType" class="article-list">
+
+                        @foreach (var article in item.Articles)
+                        {
+                            <li>
+
+                                <a href="@Url.Action("Article", "Support", new { id = @article.GenerateSlug() })">@article.Current().Title</a>
+                            </li>
+                        }
+
+                    </ul>
+                </section>
+            }
+
+        </div>
+
+
+    </section>
+</main>

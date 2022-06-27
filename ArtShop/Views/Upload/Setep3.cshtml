@@ -1,0 +1,226 @@
+﻿@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl !important" : "";
+}
+<div id="upload">
+    <div data-reactroot="">
+        <div class="app">
+            <div class="full-bleed full-bleed--background" style="background-color:#f3f3f3">
+                <div class="container artwork__container">
+                    <span></span>
+                    <div class="new-page">
+                        @using (Ajax.BeginForm("Setep3", "Upload", null, new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            UpdateTargetId = "updatediv",
+                            LoadingElementId = "loadingel",
+                            OnBegin = "$('#submit_btn').attr('disabled', 'disabled');",
+                            OnComplete = " $('#submit_btn').removeAttr('disabled', 'disabled');",
+                        }, new { enctype = "multipart/form-data" }))
+                        {
+                            if (!string.IsNullOrEmpty(ViewBag.Error))
+                            {
+                                <div class="wizard__errors">
+                                    <div class="wizard__errors__error">@ViewBag.Error</div>
+                                </div>
+                            }
+                            <div class="new-page__content pane pane--padded pane--centered pane--full">
+                                <div class="progress-component wizard-progress">
+                                    <div id="progresstrans" class="progress-component__inner" style="transform: translateX(164.444px);"></div>
+                                </div>
+                                <div class="artwork-status">
+                                    <h1 class="animate-group-0-0">@UploadRes.Artwork_Status</h1>
+                                    <p class="descriptor animate-group-0-1" style="@rtlstl">@UploadRes.step3_detail</p>
+                                    <br>
+                                    <div>
+                                        <div class="form-group animate-group-0-2 z-index-fix">
+                                            <h3>@UploadRes.step3_year_string</h3>
+                                            @*<select name="createYear" tabindex="-1" class="artwork-status__year z-index-fix rw-combobox rw-widget" style="@rtlstl">
+                                                    <option value="0"></option>
+                                                    @for (int i = DateTime.Now.Year; i > DateTime.Now.Year - 120; i--)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+                                                </select>*@
+                                            <input step="@rtlstl" tabindex="-1" class="artwork-status__year z-index-fix rw-combobox rw-widget" type="text" name="createYearString" value="">
+                                        </div>
+                                        <div id="isOrginalDiv" class="form-group animate-group-0-3">
+                                            <h3>@UploadRes.step3_forsale_string</h3>
+                                            <div class="button-radio">
+                                                <div class="button-radio__button-container">
+                                                    <input id="isOrginal" type="hidden" name="isOrginal" value="true" />
+                                                    <button onclick="change_orginalBtn(1)" id="isOrginal_yes" class="button-radio__button button button--active" type="button">@UploadRes.Yes</button>
+                                                    <button onclick="change_orginalBtn(0)" id="isOrginal_no" class="button-radio__button button" type="button">@UploadRes.No</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input id="printAvable" type="hidden" name="printAvable" value="false" />
+                                        @*<div class="form-group animate-group-0-4">
+                                                <h3>@UploadRes.step3_print_avaible_string</h3>
+                                                <div class="button-radio">
+                                                    <div class="button-radio__button-container">
+                                                        <input id="printAvable" type="hidden" name="printAvable" value="false" />
+                                                        <button onclick="change_prints(1)" id="printAvable_yes" class="button-radio__button button" type="button">@UploadRes.Yes</button>
+                                                        <button onclick="change_prints(0)" id="printAvable_no" class="button-radio__button button button--active" type="button">@UploadRes.No</button>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+                                        <div class="form-group animate-group-0-5">
+                                            <h3>@UploadRes.step3_copyright_string</h3>
+                                            <div class="button-radio">
+                                                <div class="button-radio__button-container">
+                                                    <input id="copyright" type="hidden" name="copyright" value="true" />
+                                                    <button onclick="change_copyright(1)" id="copyright_yes" class="button-radio__button button button--active" type="button">@UploadRes.Yes</button>
+                                                    <button onclick="change_copyright(0)" id="copyright_no" class="button-radio__button button" type="button">@UploadRes.No</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if ((bool)ViewBag.auction)
+                                        {
+                                            <div class="form-group animate-group-0-5">
+                                                <h3>Auction</h3>
+                                                <div class="button-radio">
+                                                    <div class="button-radio__button-container">
+                                                        <input id="auction" type="hidden" name="auction" value="true" />
+                                                        <button onclick="change_auction(1)" id="auction_yes" class="button-radio__button button button--active" type="button">@UploadRes.Yes</button>
+                                                        <button onclick="change_auction(0)" id="auction_no" class="button-radio__button button" type="button">@UploadRes.No</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="wizard-button wizard-button--left" onclick="callbackpage();"><i class="wizard-button__icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i><div class="wizard-button__text"><span>@UploadRes.step3_pre_click</span></div></div>
+                                <button type="submit" hidden id="submit"></button>
+                                <div class="wizard-button wizard-button--right" onclick="$('#submit').click(); $('#submit').attr('id', 'dontwork');">
+                                    <div class="wizard-button__text"><span>@UploadRes.step3_next_click</span></div><i class="wizard-button__icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i>
+                                </div>
+                                <div class="mobile-status-bar">
+                                    <span><button type="button" onclick="callbackpage();" class="mobile-status-bar__nav mobile-status-bar__nav--left"><i><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i></button></span>
+                                    <span><button type="button" onclick="$('#submit').click(); $('#submit').attr('id', 'dontwork');" class="mobile-status-bar__nav mobile-status-bar__nav--right"><i><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" enable-background="new 0 0 215 370.8" xml:space="preserve"><g><g><polygon points="0,346 24.1,370.8 215,185.4 24.1,0 0,24.9 165.3,185.4 "></polygon></g></g></svg></i></button></span><div class="progress-component mobile-status-bar__progress"><div class="progress-component__inner" style="transform: translateX(0px);"></div></div><span></span>
+                                </div>
+                                <div id="loadingel" hidden style="background:rgba(255, 255, 255, 0.8);position:absolute;top:0;left:0;right:0;bottom:0;z-index:2">
+                                    <i class="fa fa-spinner fa-spin" style="position:absolute;top:45%;left:47%;font-size:40px"></i>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function getProgressPercentage(print, sale) {
+        var total = 7;
+        if (sale == 'true')
+            total += 3;
+        if (print == 'true')
+            total += 1;
+        var current = 3;
+        var max = 740;
+        return (current / total) * max;
+    }
+    function updateProgress() {
+        var isprint = $('#printAvable').val();
+        var issale = $('#isOrginal').val();
+        var percent = getProgressPercentage(isprint, issale);
+        $('#progresstrans').css('transform', 'translateX(' + percent + 'px)');
+    }
+</script>
+
+<script>
+    function change_orginalBtn(val) {
+        var inp = $('#isOrginal');
+        var btnyes = $('#isOrginal_yes');
+        var btnno = $('#isOrginal_no');
+        if (val == 1) {
+            inp.val('true');
+            btnyes.addClass('button--active');
+            btnno.removeClass('button--active');
+        } else {
+            inp.val('false');
+            btnno.addClass('button--active');
+            btnyes.removeClass('button--active');
+        }
+        updateProgress();
+    }
+    function change_prints(val) {
+        var inp = $('#printAvable');
+        var btnyes = $('#printAvable_yes');
+        var btnno = $('#printAvable_no');
+        if (val == 1) {
+            inp.val('true');
+            btnyes.addClass('button--active');
+            btnno.removeClass('button--active');
+        } else {
+            inp.val('false');
+            btnno.addClass('button--active');
+            btnyes.removeClass('button--active');
+        }
+        updateProgress();
+    }
+    function change_copyright(val) {
+        var inp = $('#copyright');
+        var btnyes = $('#copyright_yes');
+        var btnno = $('#copyright_no');
+        if (val == 1) {
+            inp.val('true');
+            btnyes.addClass('button--active');
+            btnno.removeClass('button--active');
+        } else {
+            inp.val('false');
+            btnno.addClass('button--active');
+            btnyes.removeClass('button--active');
+        }
+    }
+    function change_auction(val) {
+        var inp = $('#auction');
+        var inpIsOrginal = $('#isOrginal');
+        var orginalDiv = $('#isOrginalDiv');
+
+        var btnyesOrginal = $('#isOrginal_yes');
+        var btnnoOrginal = $('#isOrginal_no');
+
+        var btnyes = $('#auction_yes');
+        var btnno = $('#auction_no');
+        if (val == 1) {
+            inp.val('true');
+            btnyes.addClass('button--active');
+            btnno.removeClass('button--active');
+            orginalDiv.hide();
+            inpIsOrginal.val('false');
+            btnno.addClass('button--active');
+            btnyes.removeClass('button--active');
+        } else {
+            inp.val('false');
+            orginalDiv.show();
+            btnno.addClass('button--active');
+            btnyes.removeClass('button--active');
+            btnnoOrginal.addClass('button--active');
+            btnyesOrginal.removeClass('button--active');
+        }
+    }
+</script>
+
+<script>
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+
+    function callbackpage() {
+        $.ajax({
+            type: 'get',
+            url: '/@CultureHelper.GetCurrentCulture()/upload/Setep2',
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $('#updatediv').html(data);
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+</script>

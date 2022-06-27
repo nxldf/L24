@@ -1,0 +1,265 @@
+﻿
+<style>
+    @@media screen and (min-width: 48rem) {
+        .footer-icons {
+            border-left: 1px solid #e9e9e9;
+            border-right: none;
+        }
+    }
+
+    .footer-icons {
+        padding-top: 30px;
+    }
+
+    .logo-Saatchi-Art {
+        margin: 0px;
+    }
+
+    @@media screen and (min-width: 64rem) {
+        #footerSubscribe {
+            padding: 0 0 0 0;
+        }
+    }
+</style>
+
+@{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+}
+
+@if (IsRighToLeft)
+{
+    <style>
+        .footer-container {
+            direction: rtl;
+        }
+
+        .header {
+            font-size: 17px !important;
+        }
+
+        .enter-email input[type="text"] {
+            padding-right: 10px;
+        }
+
+        @@media screen and (min-width: 64rem) {
+            #footerSubscribe {
+                padding: 0 3rem 0 0;
+            }
+        }
+
+        @@media screen and (min-width: 65rem) {
+            #footer .social-follow {
+                margin-right: 70px;
+            }
+        }
+    </style>
+
+}
+
+<footer id="footer" role="contentinfo">
+
+    <div class="footer-container row" style="background-color:#3e3e3e;color:white">
+        <div class="large-3 medium-3 small-6 columns">
+            <ul>
+                <li class="header" style="list-style-type:none !important">@FooterRes.For_Buyers</li>
+                @*<li><a data-gtm-event="nav footer" href="" title="Art Advisory Services">@FooterRes.Art_Advisory_Services</a></li>*@
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/support/category/12-for-buyers" target="_parent">@FooterRes.Buyer_FAQ</a></li>
+                @*<li><a data-gtm-event="nav footer" href="" target="_parent" title="">@FooterRes.Testimonials</a></li>*@
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="" title="Curator’s Circle">@FooterRes.Curator_Circle</a></li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/search?category=12&style=0&subject=0&medium=0&price=0&page=1" title="Catalog">@FooterRes.Catalog</a></li>
+            </ul>
+        </div>
+        <div class="large-3 medium-3 small-6 columns">
+            <ul>
+                <li style="list-style-type:none !important" class="header">@FooterRes.For_Agencys</li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/whysell" target="_parent">@FooterRes.Why_Sell</a></li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/support" target="_parent">@FooterRes.Agency_Handbook</a></li>
+
+            </ul>
+        </div>
+        <div class="large-3 medium-3 small-6 columns">
+            <ul>
+                <li style="list-style-type:none !important" class="header"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/Pages/About" target="_parent" title="About Us">@FooterRes.About_Us</a></li>
+                @*<li><a data-gtm-event="nav footer" href="press.html" target="_parent" title="Press">@FooterRes.Press</a></li>
+                    <li><a data-gtm-event="nav footer" href="" target="_blank" title="Careers">@FooterRes.Careers</a></li>*@
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/contactus" target="_parent" title="Contact Us">@FooterRes.Contact_Us</a></li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/mediakit" target="_parent">Media Kit</a></li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/logo" target="_parent" title="Copyright Policy">@FooterRes.Logo</a></li>
+            </ul>
+        </div>
+        <div class="large-3 medium-3 small-6 columns">
+            <ul>
+                <li style="list-style-type:none !important" class="header">@FooterRes.R24</li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/terms" target="_parent" title="Terms of Service">@FooterRes.Terms_of_Service</a></li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy" target="_parent" title="Privacy Policy">@FooterRes.Privacy_Policy</a></li>
+                <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="/@CultureHelper.GetCurrentCulture()/pages/copyrightpolicy" target="_parent" title="Copyright Policy">@FooterRes.Copyright_Policy</a></li>
+                
+                @*<li><a data-gtm-event="nav footer" href="" title="Affiliate Program" target="_blank">@FooterRes.Affiliate_Program</a></li>*@
+                <!-- internationalization test flag that will enable the currency dropdown -->
+            </ul>
+        </div>
+
+        <div class="clear"></div>
+        <hr>
+        @if (IsRighToLeft)
+        {
+            <div class="row" style="color:white">
+                <div class="medium-6 columns">
+                    <div id="footerSubscribe">
+                        <h2 style="font-size:1.3rem !important">@FooterRes.Email_header1</h2>
+                        <div>@FooterRes.Email_header2</div>
+
+
+                        @using (Ajax.BeginForm("AddSubscriber", "Home", new AjaxOptions { OnSuccess = "parsContent" }, new { @id = "formsend", @class = "footer-newsletter-subscribe" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="enter-email">
+                                <input type="hidden" name="version" value="1">
+                                <input type="hidden" name="account_type" value="collector">
+                                <input type="hidden" name="user_type_id" value="1">
+                                <input type="text" name="email" id="email" value="" class="text" style="width:67% !important;" autocomplete="off" placeholder="Email Address">
+                                <input id="so-subscribe-submit" type="submit" name="subscribe" style="background:#3189e4;margin-left:0px !important;font-size:.68rem" value="@FooterRes.SignUp" class="button btn-info dark">
+                            </div>
+                        }
+
+
+                    </div>
+                    <div id="footerSubscribeThanks" class="thank-you hide">
+                        <h2>Thank you for signing up!</h2>
+                    </div>
+                    <script type="text/javascript">
+                        Saatchi.Loader.load('subscribe', { 'js': true }, function () {
+                        });
+                    </script>
+                </div>
+
+                <div class="medium-6 columns">
+                    <div class="footer-icons" style="margin-left:24px">
+                        <ul class="social-follow inline-list" style="margin-bottom:10px">
+                            @*<li style="list-style-type:none !important;margin-left:53px"><a data-gtm-event="nav footer" href="http://www.facebook.com/" target="_blank" title="Facebook"><i class="fa fa-facebook btn-round"></i></a></li>
+                            <li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="http://www.twitter.com/R24com" target="_blank" title="Twitter"><i class="fa fa-twitter btn-round"></i></a></li>*@
+                            @*<li><a data-gtm-event="nav footer" href="http://pinterest.com/" target="_blank" title="Pinterest"><i class="fa fa-pinterest btn-round"></i></a></li>*@
+                            @*<li><a data-gtm-event="nav footer" href="" target="_blank" title="Tumblr"><i class="fa fa-tumblr btn-round"></i></a></li>*@
+                            <li style="list-style-type:none !important;display:inline-block"><a data-gtm-event="nav footer" href="http://instagram.com/R24" target="_blank" title="Instagram"><i class="fa fa-instagram btn-round"></i></a></li>
+                            @*<li style="list-style-type:none !important"><a data-gtm-event="nav footer" href="https://plus.google.com/" rel="publisher" target="_blank" title="Google Plus"><i class="fa fa-google-plus btn-round"></i></a></li>*@
+                            @*<li><a data-gtm-event="nav footer" href="https://www.youtube.com/" rel="publisher" target="_blank" title="YouTube"><i class="fa fa-youtube btn-round"></i></a></li>*@
+                        </ul>
+
+                        <div class="clear"></div>
+                        <div style="text-align:center">
+                            <a data-gtm-event="nav footer" style="background:none;text-align:center;width:-webkit-fill-available !important;padding-left:0px !important;right:unset" href="/@CultureHelper.GetCurrentCulture()/" title="R24">@FooterRes.Copyright_msg</a>
+                            @*<div class="trustpilot-widget" data-style-height="20px" data-style-width="100%" data-theme="light">
+                                    <a data-gtm-event="nav footer" href="" target="_blank"></a>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+        else
+        {
+            <div class="row" style="color:white">
+                <div class="medium-6 columns">
+                    <div id="footerSubscribe">
+                        <h2>@FooterRes.Email_header1</h2>
+                        <div>@FooterRes.Email_header2</div>
+
+                        @using (Ajax.BeginForm("AddSubscriber", "Home",  new AjaxOptions { OnSuccess = "parsContent" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="enter-email" style="padding-right:10px;">
+                                <input type="hidden" name="version" value="1">
+                                <input type="hidden" name="account_type" value="collector">
+                                <input type="hidden" name="user_type_id" value="1">
+                                <input type="text" name="email" id="email" value="" class="text" autocomplete="off" placeholder="Email Address">
+                                <input id="so-subscribe-submit" type="submit" name="subscribe" style="background:#3189e4;margin-left:0px !important" value="@FooterRes.SignUp" class="button btn-info dark">
+                            </div>
+                        }
+
+
+                    </div>
+                    <div id="footerSubscribeThanks" class="thank-you hide">
+                        <h2>Thank you for signing up!</h2>
+                    </div>
+                    <script type="text/javascript">
+                        Saatchi.Loader.load('subscribe', { 'js': true }, function () {
+                        });
+                    </script>
+                </div>
+                <div class="medium-6 columns">
+                    <div class="footer-icons">
+                        <div style="text-align:center !important">
+                            <ul class="social-follow inline-list">
+                                @*<li style="margin-left:60px"><a data-gtm-event="nav footer" href="http://www.facebook.com/" target="_blank" title="Facebook"><i class="fa fa-facebook btn-round"></i></a></li>
+                <li><a data-gtm-event="nav footer" href="http://www.twitter.com/R24com" target="_blank" title="Twitter"><i class="fa fa-twitter btn-round"></i></a></li>*@
+                                @*<li><a data-gtm-event="nav footer" href="http://pinterest.com/" target="_blank" title="Pinterest"><i class="fa fa-pinterest btn-round"></i></a></li>*@
+                                @*<li><a data-gtm-event="nav footer" href="" target="_blank" title="Tumblr"><i class="fa fa-tumblr btn-round"></i></a></li>*@
+                                <li style="float:unset;display:inline-block"><a data-gtm-event="nav footer" href="http://instagram.com/R24" target="_blank" title="Instagram"><i class="fa fa-instagram btn-round"></i></a></li>
+                                @*<li><a data-gtm-event="nav footer" href="https://plus.google.com/" rel="publisher" target="_blank" title="Google Plus"><i class="fa fa-google-plus btn-round"></i></a></li>*@
+                                @*<li><a data-gtm-event="nav footer" href="https://www.youtube.com/" rel="publisher" target="_blank" title="YouTube"><i class="fa fa-youtube btn-round"></i></a></li>*@
+                            </ul>
+                        </div>
+
+                        <div class="clear"></div>
+                        <div style="text-align:center;margin-top:10px">
+                            <a data-gtm-event="nav footer" style="background:none;text-align:left" href="/@CultureHelper.GetCurrentCulture()/" title="R24">@FooterRes.Copyright_msg</a>
+                            @*<div class="trustpilot-widget" data-style-height="20px" data-style-width="100%" data-theme="light">
+                                    <a data-gtm-event="nav footer" href="" target="_blank"></a>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (IsRighToLeft)
+        {
+            <div class="clear"></div>
+            <hr>
+            <div class="row">
+                <div class="medium-12 columns">
+                    <p style="direction:rtl;font-size:16px">
+                        گروه آرتیسکاوری با هدف از بین بردن مرزهای جغرافیای، نژادی و سیاسی برای معرفی هنرمندان و فروش آثار هنری شروع به کار کرده است و تلاش می کند تا در حوزه ی هنرهای تجسمی از قبیل نقاشی، طراحی، تصویرسازی، خوشنویسی، چاپ، کلاژ و مجسمه سازی، منبعی معتبر برای دسترسی سریع و آسان به اطلاعات، اخبار هنری و آثار اصیل باشد.
+                    </p>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="clear"></div>
+            <hr>
+            <div class="row">
+                <div class="medium-12 columns">
+                    <p style="font-size:16px">
+                        R24 group aims to eliminate geographical, racial and political boundaries to introduce Agencys and sell their artworks. We try to be a reliable source for quick and easy access to art news, original works and information about visual arts such as painting, design, illustration, calligraphy, printing, collage and sculpture.
+                    </p>
+                </div>
+            </div>
+
+        }
+    </div>
+
+</footer>
+
+
+<script>
+    function parsContent(result) {
+        if (result == "done") {
+            $('#email').val('');
+            $.toast({
+                heading: 'Success',
+                text: 'subscription successful',
+                icon: 'success',
+                showHideTransition: 'slide',
+                position: 'top-right',
+                hideAfter: 7000
+            })
+        } else {
+
+            $('#ajaxrender').html(result);
+        }
+    }
+</script>

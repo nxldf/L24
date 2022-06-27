@@ -1,0 +1,135 @@
+﻿@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl !important" : "";
+}
+
+<div id="upload">
+    <div data-reactroot="">
+        <div class="app">
+            <div class="full-bleed full-bleed--background" style="background-color:#f3f3f3">
+                <div class="container artwork__container">
+                    <span></span>
+                    <div class="new-page">
+                        @using (Ajax.BeginForm("Setep4", "Upload", null, new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            UpdateTargetId = "updatediv",
+                            LoadingElementId = "loadingel",
+                            OnBegin = "$('#submit_btn').attr('disabled', 'disabled');",
+                            OnComplete = " $('#submit_btn').removeAttr('disabled', 'disabled');",
+                        }, new { enctype = "multipart/form-data" }))
+                        {
+                            if (!string.IsNullOrEmpty(ViewBag.Error))
+                            {
+                                <div class="wizard__errors">
+                                    <div class="wizard__errors__error">@ViewBag.Error</div>
+                                </div>
+                            }
+                            <div class="new-page__content pane pane--padded pane--centered pane--full">
+                                <div class="progress-component wizard-progress">
+                                    <div class="progress-component__inner" style="transform: translateX(@ViewBag.progress);"></div>
+                                </div>
+                                <div class="wizard-step">
+                                    <div class="crops">
+                                        <div class="image-upload-dragover">
+                                            <div class="image-upload-dragover__message"></div>
+                                        </div>
+                                        <h1 class="animate-group-0-0">@UploadRes.Artwork_Image</h1>
+                                        <p class="descriptor animate-group-0-1" style="@rtlstl">@UploadRes.step4_detail</p>
+                                        <div class="crops__web">
+                                            <div class="crops__web-rect animate-group-0-2" data="[object Object]">
+                                                <div class="cropper-container cropper-bg" style="width: 405px; height: 270px;">
+                                                    <div class="cropper-wrap-box">
+                                                        <div class="cropper-canvas">
+                                                            <img id="wideimg" src="@ViewBag.img" style="width: 360.32px; height: 270px; margin-left: 0px; margin-top: 0px; transform: rotate(0deg);">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="crops__web-square animate-group-0-3" data="[object Object]">
+                                                <div class="cropper-container cropper-bg" style="width: 200px; height: 200px;">
+                                                    <div class="cropper-wrap-box">
+                                                        <div class="cropper-canvas">
+                                                            <img id="sqrimg" src="@ViewBag.img" style="width: 200px; height: 149.867px; margin-left: 0px; margin-top: 0px; transform: rotate(0deg);">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="wizard-button wizard-button--left" onclick="callbackpage()"><i class="wizard-button__icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i><div class="wizard-button__text"><span>@UploadRes.step4_pre_click</span></div></div>
+                                <button type="submit" hidden id="submit"></button>
+                                <div class="wizard-button wizard-button--right" onclick="$('#submit').click(); $('#submit').attr('id', 'dontwork');">
+                                    <div class="wizard-button__text"><span>@UploadRes.step4_next_click</span></div><i class="wizard-button__icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i>
+                                </div>
+                                <div class="mobile-status-bar">
+                                    <span><button type="button" onclick="callbackpage();" class="mobile-status-bar__nav mobile-status-bar__nav--left"><i><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" style="enable-background:new 0 0 215 370.8;" xml:space="preserve"><g><g><polygon points="215,24.8 190.9,0 0,185.4 190.9,370.8 215,346 49.7,185.4 "></polygon></g></g></svg></i></button></span>
+                                    <span><button type="button" onclick="$('#submit').click(); $('#submit').attr('id', 'dontwork');" class="mobile-status-bar__nav mobile-status-bar__nav--right"><i><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 215 370.8" enable-background="new 0 0 215 370.8" xml:space="preserve"><g><g><polygon points="0,346 24.1,370.8 215,185.4 24.1,0 0,24.9 165.3,185.4 "></polygon></g></g></svg></i></button></span><div class="progress-component mobile-status-bar__progress"><div class="progress-component__inner" style="transform: translateX(0px);"></div></div><span></span>
+                                </div>
+                                <div id="loadingel" hidden style="background:rgba(255, 255, 255, 0.8);position:absolute;top:0;left:0;right:0;bottom:0;z-index:2">
+                                    <i class="fa fa-spinner fa-spin" style="position:absolute;top:45%;left:47%;font-size:40px"></i>
+                                </div>
+                            </div>
+
+                            <input id="square_x" type="hidden" name="square_x" value="" />
+                            <input id="square_y" type="hidden" name="square_y" value="" />
+                            <input id="square_width" type="hidden" name="square_width" value="" />
+                            <input id="square_height" type="hidden" name="square_height" value="" />
+                            <input id="wide_x" type="hidden" name="wide_x" value="" />
+                            <input id="wide_y" type="hidden" name="wide_y" value="" />
+                            <input id="wide_width" type="hidden" name="wide_width" value="" />
+                            <input id="wide_height" type="hidden" name="wide_height" value="" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var image = document.getElementById('wideimg');
+    var cropper = new Cropper(image, {
+        aspectRatio: 1.5,
+        viewMode: 1, autoCropArea: 1, scalable: !1, zoomable: !1, dragable: !1,
+        crop: function (e) {
+            $('#wide_x').val(e.detail.x);
+            $('#wide_y').val(e.detail.y);
+            $('#wide_width').val(e.detail.width);
+            $('#wide_height').val(e.detail.height);
+        }
+    });
+
+    var image = document.getElementById('sqrimg');
+    var cropper = new Cropper(image, {
+        aspectRatio: 1,
+        viewMode: 1, autoCropArea: 1, scalable: !1, zoomable: !1, dragable: !1,
+        crop: function (e) {
+            $('#square_x').val(e.detail.x);
+            $('#square_y').val(e.detail.y);
+            $('#square_width').val(e.detail.width);
+            $('#square_height').val(e.detail.height);
+        }
+    });
+</script>
+
+<script>
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+
+    function callbackpage() {
+        $.ajax({
+            type: 'get',
+            url: '/@CultureHelper.GetCurrentCulture()/upload/Setep3',
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                $('#updatediv').html(data);
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+</script>

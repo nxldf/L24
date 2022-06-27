@@ -1,0 +1,196 @@
+﻿@using Blog.Extentions
+@using Blog.Objects
+@{
+    ViewBag.Title = Model.Title;
+    var contentClass = Model.Links.Count == 0 ? "col-lg-10" : "col-lg-6";
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl !important;text-align:justify !important" : "";
+    var dir = IsRighToLeft ? "direction:rtl !important" : "";
+}
+
+@model Post
+@if (IsRighToLeft)
+{
+    <style>
+        .archive .post-element p, .archive h3, .search .post-element p, .search h3, .tag .post-element p, .tag h3, .category .post-element p, .category h3, .single .post-element p, .single h3 {
+            text-align: justify;
+            direction: rtl;
+        }
+
+        h4, .h4, h5, .h5, h6, .h6 {
+            text-align: right !important;
+            direction: rtl;
+        }
+    </style>
+}
+else
+{
+    <style>
+        .archive .post-element,
+        .search .post-element,
+        .tag .post-element,
+        .category .post-element,
+        .single .post-element {
+            min-height: 460px;
+            height: auto;
+            text-align: left;
+            position: relative;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+
+        </div>
+
+        <div id="post-80445" class="post-element post-80445 post type-post status-publish format-standard has-post-thumbnail hentry category-inspiration category-lifestyle">
+
+            <div class="flexslider" style="height:auto">
+                <div class="slider-overlay">
+                    <span class="close"></span>
+                </div>
+
+                <ul class="slides">
+
+                    @foreach (var item in Model.HeaderPhotos)
+                    {
+                        <li class="flex-active-slide" style="width: 100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; z-index: 2;">
+                            <div class="img-holder">
+                                <img src="/@item.Path" draggable="false">
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <span id="play-youtube"></span>
+                <span id="play-vimeo"></span>
+                <span id="pause-youtube"></span>
+                <span id="pause-vimeo"></span>
+                <ol class="flex-control-nav flex-control-paging"></ol><ul class="flex-direction-nav"><li class="flex-nav-prev"><a class="flex-prev flex-disabled" href="#" tabindex="-1"></a></li><li class="flex-nav-next"><a class="flex-next flex-disabled" href="#" tabindex="-1"></a></li></ul>
+            </div>
+
+            <div class="row post-wrapper">
+                <div class="col-lg-2 hidden-xs hidden-sm hidden-md">
+                    <div class="date-info">
+                        <p><strong>@Model.PostedOn.ToString("dd MMM yyyy")</strong></p>
+                        <p>@Resources.ShareRes.Posted_by</p>
+                        <p><strong>@Model.Author</strong></p>
+                    </div><!-- .date-info -->
+
+                    <div class="about-info">
+                        @if (Model.SubCategory != null)
+                        {
+                            <h3>@Resources.ShareRes.About @Model.SubCategory.Current().Name</h3>
+                            <p></p><p>@Model.SubCategory.Current().Description</p>
+                        }
+                        else
+                        { <h3>@Resources.ShareRes.About @Model.Category.Current().Name</h3>
+                        <p></p><p>@Model.Category.Current().Description</p>
+                        }
+
+                        <p></p>
+                    </div>
+                    <div class="tag-info">
+                        <h3>@Resources.ShareRes.Tagged</h3>
+                        <ul class="tag-list">
+                            @foreach (var item in Model.Tags)
+            {
+                                <li>
+                                    <a href="@Url.RouteUrl( "tag_details", new { id = item.GenerateSlug() })">
+                                        
+                                        @item.Current().Name
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </div>
+                </div><!-- .col-lg-2 -->
+
+                <div class="@contentClass post-content">
+                    <article>
+                        @if (Model.SubCategory != null)
+                        {
+                            <h3 style="text-align: center !important"><a href="@Url.Action(Model.Category.Name, "Category",new { id =Model.SubCategory.GenerateSlug() })">@Model.SubCategory.Current().Name</a></h3>
+                        }
+                        else
+                        {
+                            <h3 style="text-align: center !important"><a href="@Url.RouteUrl("Category", new { id = Model.Category.GenerateSlug() })">@Model.Category.Current().Name</a></h3>
+                        }
+
+                        <h1 style="text-align:center !important;@dir">@Model.Current().Title</h1>
+
+                        <div class="date-info hidden-lg">
+                            <p><strong>@Model.PostedOn.ToString("dd MMM yyyy")</strong> @Resources.ShareRes.Posted_by <strong>@Model.Author</strong></p>
+                        </div><!-- .date-info -->
+                        @Html.Raw(Model.Current().Description)
+                    </article>
+
+
+
+                    <div class="row hidden-lg">
+                        <div class="about-info">
+
+                            @if (Model.SubCategory != null)
+                            {
+                                <h3>@Resources.ShareRes.About @Model.SubCategory.Current().Name</h3>
+                                <p></p><p>@Model.SubCategory.Current().Description</p>
+                            }
+                            else
+                            { <h3>@Resources.ShareRes.About @Model.Category.Current().Name</h3>
+                            <p></p><p>@Model.Category.Current().Description</p>
+                            }
+
+                            <p></p>
+                        </div>
+                        <div class="tag-info">
+                            <h3>@Resources.ShareRes.Tagged</h3>
+                            <ul class="tag-list">
+                                @foreach (var item in Model.Tags)
+            {
+                                    <li>
+                                        <a href="@Url.RouteUrl( "tag_details", new { id = item.GenerateSlug() })">
+
+                                            @item.Current().Name
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div><!-- .row -->
+
+                </div><!-- .col-lg-6 -->
+                <!-- .col-lg-4 -->
+                @if (Model.Links.Count > 0)
+                {
+                    <div class="col-lg-4 right-sidebar">
+
+                        @foreach (var item in Model.Links)
+                        {
+
+                            <iframe style="width:310px;height:400px;border-width:0px" src='https://cuber.dev/home/relatedartwork?id=@item.URL' name="fram" id='fram'></iframe>
+
+                        }
+
+                    </div>
+                }
+
+            </div><!-- .row -->
+        </div>
+
+
+
+    </div>
+</div>
+@*<script src="~/Scripts/jquery.flexslider-min.js"></script>*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type='text/javascript' src="http://flexslider.woothemes.com/js/jquery.flexslider.js"></script>
+<script type='text/javascript' src="http://flexslider.woothemes.com/js/jquery.easing.js"></script>
+<script type='text/javascript' src="http://flexslider.woothemes.com/js/jquery.mousewheel.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type='text/javascript' src="http://flexslider.woothemes.com/js/jquery.flexslider.js"></script>
+<script type='text/javascript' src="http://flexslider.woothemes.com/js/jquery.easing.js"></script>
+<script type='text/javascript' src="http://flexslider.woothemes.com/js/jquery.mousewheel.js"></script>
+<script type='text/javascript' src="http://lab.mattvarone.com/projects/jquery/totop/js/jquery.ui.totop.js"></script>

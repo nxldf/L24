@@ -1,0 +1,172 @@
+﻿@model ArtShop.Models.RegisterViewModel
+@{
+    var IsRighToLeft = CultureHelper.IsRighToLeft();
+    var rtlstl = IsRighToLeft ? "direction:rtl !important" : "";
+}
+@{
+    ViewBag.Title = "Register | R24";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="R24 is the best place to buy artwork online. Find the perfect original paintings, fine art photographs and more from the largest selection of original art in the world." />
+    <meta name="keywords" content="affordable art, art dealers, art for sale, art original,art websites, buy art, buy art online, buy original art, buy paintings,buy paintings online, canvas wall art, contemporary abstract art,contemporary art, contemporary arts, contemporary oil paintings, fine art,fine art photography, fine art photography for sale, framed art,home decor wall art, modern art, modern art paintings, office interior design,online art, online art gallery, original art, original art for sale, original painting,collage, drawings, pencil drawings, printmaking for sale, london Agencys, la Agencys, nyc Agencys, australia Agencys, uk Agencys, german Agencys,interior design help, nude photography, nude art, abstract art" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Crimson+Text:400,600,400italic,600italic" />
+    <link rel="stylesheet" href="~/Content/Vendor/maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link href="~/Content/Vendor/ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/smoothness/jquery-ui.css" media="screen" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="~/Content/app-99c5613a7fbb0f5f16e645bc204d000d.css" />
+
+    <script src="~/Content/Vendor/ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="~/Content/Vendor/ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="~/Content/Vendor/code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+
+    @*@Styles.Render("~/Content/scss")*@
+    @*@Scripts.Render("~/bundles/modernizr")*@
+
+    @if (IsRighToLeft)
+    {
+        <style>
+            @@font-face {
+                font-family: 'YJ';
+                src: url('/Content/font/IRANSans.ttf');
+            }
+
+            html, tr, td, ul, span, h1, h2, h3, em, p, a, body, html, button, b, small, table, header, input, select, option, label, li, ol, div {
+                font-family: yj,"Helvetica",sans-serif !important;
+            }
+        </style>
+    }
+</head>
+
+<body class="saatchi index bgcolor signed-out">
+    <script>
+        if (navigator.userAgent.match(/AppleWebKit/) && !navigator.userAgent.match(/Chrome/)) {
+            document.body.className += ' safari';
+        }
+        else if (navigator.userAgent.indexOf('MSIE') !== -1 || !!navigator.userAgent.match(/Trident\/7\./)) {
+            document.body.className += ' ie';
+        }
+        function isSafari5() {
+            return !!navigator.userAgent.match('Safari/index.html') && !navigator.userAgent.match('Chrome') && !!navigator.userAgent.match(' Version/5.');
+        };
+        if (isSafari5() === true) {
+            $('#unsupportedSafari').show();
+        }
+    </script>
+
+    <div id="authentication-app-container">
+        <div data-reactroot="" class="authentication">
+            <!-- react-empty: 2 -->
+            <header class="authentication__header animate-group-0-0">
+                <a href="/">
+                    <img alt="R24 Art Logo" style="width:200px;height:42px" src="~/Content/Images/logo.png">
+                </a>
+            </header>
+            <div class="authentication__content">
+                <div>
+                    <!-- react-empty: 8 -->
+                    <div>
+                        <div class="authentication__content__section">
+                            <div class="authentication__section-title animate-group-0-0">@ShareRes.Register</div>
+                            <h1 class="animate-group-0-4">@ShareRes.Welcome</h1>
+                            <div class="animate-group-1-5 authentication__content__inner">
+
+                                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "", role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <br>
+                                    <div class="authentication__or">
+                                        <strong>@ShareRes.Or</strong>
+                                    </div>
+                                    <br>
+                                    <div class="input-group">
+                                        <div class="input-with-placeholder input-with-placeholder--has-value">
+                                            @Html.LabelFor(m => m.FirstName, new { @class = "input-with-placeholder__label" })
+                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "input-with-placeholder__input ", id = "input-with-place-holder-0", name = "firstName" })
+                                        </div>
+                                        <div class="input-with-placeholder input-with-placeholder--has-value">
+                                            @Html.LabelFor(m => m.LastName, new { @class = "input-with-placeholder__label" })
+                                            @Html.TextBoxFor(m => m.LastName, new { @class = "input-with-placeholder__input ", id = "input-with-place-holder-1", name = "lastName" })
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-with-placeholder input-with-placeholder--has-value">
+                                            @Html.LabelFor(m => m.Email, new { @class = "input-with-placeholder__label" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "input-with-placeholder__input ", id = "input-with-place-holder-2", name = "email" })
+                                        </div>
+                                    </div><div class="input-group">
+                                        <div class="input-with-placeholder input-with-placeholder--has-value">
+                                            @Html.LabelFor(m => m.Password, new { @class = "input-with-placeholder__label" })
+                                            @Html.PasswordFor(m => m.Password, new { @class = "input-with-placeholder__input ", id = "input-with-place-holder-3", name = "password" })
+
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top:10px"><strong>@ShareRes.Select_profile_type</strong></div>
+                                    <div style="margin-bottom:10px"><small>@ShareRes.Register_header2</small></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input id="IsAgency" type="hidden" />
+                                            <button type="button" id="collectorButton" onclick="ChangeState(1)" class="btn btn--block">@ShareRes.Collector</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" id="AgencyButton" onclick="ChangeState(2)" class="btn btn--block">@ShareRes.I_Agency</button>
+                                        </div>
+                                    </div>
+
+                                    <br>
+                                    <button type="submit" class="btn btn--green btn--block">@ShareRes.Register</button>
+                                    <br>
+                                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                                    <strong>
+                                        <!-- react-text: 40 -->@ShareRes.Already_have <!-- /react-text -->
+                                        <a href="/@CultureHelper.GetCurrentCulture()/Account/Login">@ShareRes.SignIn</a>
+                                    </strong>
+
+                                }
+                            </div>
+
+                            <div class="authentication__section-footer animate-group-1-12 authentication__section-footer--light" style="@rtlstl"><!-- react-text: 43 -->@ShareRes.Register_des_p1 <!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/terms">@ShareRes.Terms_use</a><!-- react-text: 45 --> @ShareRes.And&nbsp;<!-- /react-text --><a href="/@CultureHelper.GetCurrentCulture()/pages/privacypolicy">@ShareRes.Privacy_policy</a><!-- react-text: 47 --> @ShareRes.Register_des_p2<!-- /react-text --></div><div class="authentication__loader"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Content/js/dist/commons-b9e9ed3b8b77df9e315c.js"></script>
+
+
+    <script>
+        function ChangeState(id) {
+            if (id == 1) {
+                $('#AgencyButton').removeClass('btn--selected');
+                if (!$('#collectorButton').hasClass('btn--selected'))
+                    $('#collectorButton').addClass('btn--selected');
+
+                $('#isAgency').val = 1;
+
+            }
+            else {
+                $('#collectorButton').removeClass('btn--selected');
+                if (!$('#AgencyButton').hasClass('btn--selected'))
+                    $('#AgencyButton').addClass('btn--selected');
+
+                $('#isAgency').val = 0;
+            }
+        }
+    </script>
+
+</body>
+</html>
